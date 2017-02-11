@@ -26,7 +26,6 @@ class Header {
 
   wipLimit() {
     const headerTitle = this.title();
-    console.log(`title is ${headerTitle}`);
     const wipFinder = /.*\[(\d*)\]:$/;
     const results = wipFinder.exec(headerTitle);
     if (results !== null) {
@@ -77,17 +76,31 @@ class Header {
 
   markAsOnEdge() {
     console.log(`Marking ${this.title()} as on edge`);
+    for (const child of this.children()) {
+      child.classList.remove('wip-limit-under');
+      child.classList.remove('wip-limit-over');
+      child.classList.add('wip-limit-on-edge');
+    }
   }
 
   markAsOverLimit() {
     console.log(`Marking ${this.title()} as over limit`);
+    for (const child of this.children()) {
+      child.classList.remove('wip-limit-under');
+      child.classList.add('wip-limit-over');
+      child.classList.remove('wip-limit-on-edge');
+    }
   }
 
   markAsUnderLimit() {
     console.log(`Marking ${this.title()} as under limit`);
+    for (const child of this.children()) {
+      child.classList.add('wip-limit-under');
+      child.classList.remove('wip-limit-over');
+      child.classList.remove('wip-limit-on-edge');
+    }
   }
 }
-
 
 setInterval(() => {
   console.log('starting to mark whole document');
