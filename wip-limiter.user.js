@@ -18,10 +18,10 @@ console.log('starting script');
 })(`
   .wip-limit-under { }
   .wip-limit-over {
-    background-color: rgb(214, 65, 65);
+    background-color: rgb(214, 65, 65) !important;
   }
   .wip-limit-on-edge {
-    background-color: rgb(239, 190, 67);
+    background-color: rgb(239, 190, 67) !important;
   }
   div.task-row-overlay {
     background-color: rgb(214, 65, 65);
