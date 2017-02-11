@@ -51,8 +51,12 @@ const markWholeDocument = () => {
       const wipFinder = /.*\[(\d*)\]:$/;
       const results = wipFinder.exec(headerTitle);
       console.log(`results is ${results}`);
-      const wipLimit = parseInt(results[1], 10);
-      console.log(`wipLimit is ${wipLimit}`);
+      if (results !== null) {
+        const wipLimit = parseInt(results[1], 10);
+        console.log(`wipLimit is ${wipLimit}`);
+      } else {
+        console.log(`No wipLimit on ${headerTitle}`);
+      }
     } else {
       console.log('no headers found');
     }
