@@ -134,7 +134,7 @@ class Header {
 setInterval(() => {
   let headers = document.getElementsByClassName('bar-row');
   if (headers.length === 0) {
-    headers = document.getElementsByClassName('taskList');
+    headers = document.getElementsByClassName('sectionRow');
   }
   for (const headerElement of headers) {
     const header = new Header(headerElement);
