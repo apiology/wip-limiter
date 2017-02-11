@@ -30,7 +30,10 @@ class Header {
 
   // header.classList.contains("bar-row")
   title() {
-    const textareas = this.header.getElementsByClassName('task-row-text-input');
+    let textareas = this.header.getElementsByClassName('task-row-text-input');
+    if (textareas.length === 0) {
+      textareas = this.header.getElementsByClassName('taskName-input');
+    }
     if (textareas.length !== 1) {
       return null;
     }
@@ -54,7 +57,8 @@ class Header {
   }
 
   static isHeader(element) {
-    return element.classList.contains('bar-row');
+    return element.classList.contains('bar-row') ||
+      element.classList.contains('sectionRow');
   }
 
   children() {
@@ -133,8 +137,10 @@ class Header {
 
 setInterval(() => {
   let headers = document.getElementsByClassName('bar-row');
+  console.log(`Found ${headers.length} using bar-row`);
   if (headers.length === 0) {
     headers = document.getElementsByClassName('sectionRow');
+    console.log(`Found ${headers.length} using sectionRow`);
   }
   for (const headerElement of headers) {
     const header = new Header(headerElement);
