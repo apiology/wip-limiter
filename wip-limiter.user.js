@@ -23,9 +23,6 @@ console.log('starting script');
   .wip-limit-on-edge {
     background-color: rgb(239, 190, 67) !important;
   }
-  div.task-row-overlay {
-    background-color: rgb(214, 65, 65);
-  }
 `);
 
 class Header {
@@ -101,9 +98,19 @@ class Header {
     }
   }
 
+  elementsToMark() {
+    const all = this.headerAndChildren();
+    let subElements = [];
+    for (const task of all) {
+      subElements =
+        subElements.concat(task.getElementsByClassName('task-row-overlay'));
+    }
+    return all.concat(subElements);
+  }
+
   markAsOnEdge() {
     console.log(`Marking ${this.title()} as on edge`);
-    for (const child of this.headerAndChildren()) {
+    for (const child of this.elementsToMark()) {
       child.classList.remove('wip-limit-under');
       child.classList.remove('wip-limit-over');
       child.classList.add('wip-limit-on-edge');
@@ -112,7 +119,7 @@ class Header {
 
   markAsOverLimit() {
     console.log(`Marking ${this.title()} as over limit`);
-    for (const child of this.headerAndChildren()) {
+    for (const child of this.elementsToMark()) {
       child.classList.remove('wip-limit-under');
       child.classList.add('wip-limit-over');
       child.classList.remove('wip-limit-on-edge');
@@ -121,7 +128,7 @@ class Header {
 
   markAsUnderLimit() {
     console.log(`Marking ${this.title()} as under limit`);
-    for (const child of this.headerAndChildren()) {
+    for (const child of this.elementsToMark()) {
       child.classList.add('wip-limit-under');
       child.classList.remove('wip-limit-over');
       child.classList.remove('wip-limit-on-edge');
