@@ -42,23 +42,19 @@ class Header {
 const markWholeDocument = () => {
   console.log('starting to mark whole document');
   const headers = document.getElementsByClassName('bar-row');
-  console.log(headers);
+  // console.log(headers);
   for (const headerElement of headers) {
-    if (headers.length > 0) {
-      const header = new Header(headerElement);
-      const headerTitle = header.title();
-      console.log(`title is ${headerTitle}`);
-      const wipFinder = /.*\[(\d*)\]:$/;
-      const results = wipFinder.exec(headerTitle);
-      console.log(`results is ${results}`);
-      if (results !== null) {
-        const wipLimit = parseInt(results[1], 10);
-        console.log(`wipLimit is ${wipLimit}`);
-      } else {
-        console.log(`No wipLimit on ${headerTitle}`);
-      }
+    const header = new Header(headerElement);
+    const headerTitle = header.title();
+    console.log(`title is ${headerTitle}`);
+    const wipFinder = /.*\[(\d*)\]:$/;
+    const results = wipFinder.exec(headerTitle);
+    console.log(`results is ${results}`);
+    if (results !== null) {
+      const wipLimit = parseInt(results[1], 10);
+      console.log(`wipLimit is ${wipLimit}`);
     } else {
-      console.log('no headers found');
+      console.log(`No wipLimit on ${headerTitle}`);
     }
   }
 };
