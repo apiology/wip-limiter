@@ -9,22 +9,22 @@
 console.log('starting script');
 
 class Header {
-  // constructor(header) {
-    // this.header = header;
-  // }
+  constructor(header) {
+    this.header = header;
+  }
 
 
   // header.classList.contains("bar-row")
   title() {
     // look for child td with class = barRow-contents
     // const td = header.getElementsByClassName('barRow-contents')
-    return 'dummy_title';
-    // const textareas = this.header.getElementsByClassName('task-row-text-input');
-    // if (textareas.length !== 1) {
-    //   return null;
-    // }
+    // return 'dummy_title';
+    const textareas = this.header.getElementsByClassName('task-row-text-input');
+    if (textareas.length !== 1) {
+      return null;
+    }
 
-    // return textareas[0].value;
+    return textareas[0].value;
   }
 
 // const wipLimit = header => {
@@ -44,10 +44,9 @@ const markWholeDocument = () => {
   const headers = document.getElementsByClassName('bar-row');
   console.log(headers);
   if (headers.length > 0) {
-    console.log('found header');
-    // const headerElement = headers[0];
-    // const header = new Header(headerElement);
-    // console.log(`title is ${header.title()}`);
+    const headerElement = headers[0];
+    const header = new Header(headerElement);
+    console.log(`title is ${header.title()}`);
   } else {
     console.log('no headers found');
   }
