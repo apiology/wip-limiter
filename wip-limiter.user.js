@@ -154,25 +154,9 @@ class Header {
 }
 
 setInterval(() => {
-  console.log('starting to mark whole document');
   const headers = document.getElementsByClassName('bar-row');
   for (const headerElement of headers) {
     const header = new Header(headerElement);
     header.markBackgroundColor();
   }
 }, 1000);
-console.log('setInterval run');
-
-
-// if (document.body) {
-//   console.log('already loaded; running now');
-//   markWholeDocument();
-//   console.log('ran!');
-// } else {
-//   console.log('registering listener');
-//   document.addEventListener('DOMContentLoaded', markWholeDocument, false);
-//   console.log('registered listener');
-// }
-
-// // const textareas = header.getElementsByClassName('task-row-text-input');
-// // let headerTitle = textareas[0].value;
