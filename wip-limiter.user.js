@@ -75,6 +75,13 @@ class Header {
     return childList;
   }
 
+  headerAndChildren() {
+    // shallow copy
+    const all = this.children().slice();
+    all.unshift(this.header);
+    return all;
+  }
+
   markBackgroundColor() {
     const wipLimit = this.wipLimit();
     if (wipLimit === null) {
@@ -93,7 +100,7 @@ class Header {
 
   markAsOnEdge() {
     console.log(`Marking ${this.title()} as on edge`);
-    for (const child of this.children()) {
+    for (const child of this.headerAndChildren()) {
       child.classList.remove('wip-limit-under');
       child.classList.remove('wip-limit-over');
       child.classList.add('wip-limit-on-edge');
@@ -102,7 +109,7 @@ class Header {
 
   markAsOverLimit() {
     console.log(`Marking ${this.title()} as over limit`);
-    for (const child of this.children()) {
+    for (const child of this.headerAndChildren()) {
       child.classList.remove('wip-limit-under');
       child.classList.add('wip-limit-over');
       child.classList.remove('wip-limit-on-edge');
@@ -111,7 +118,7 @@ class Header {
 
   markAsUnderLimit() {
     console.log(`Marking ${this.title()} as under limit`);
-    for (const child of this.children()) {
+    for (const child of this.headerAndChildren()) {
       child.classList.add('wip-limit-under');
       child.classList.remove('wip-limit-over');
       child.classList.remove('wip-limit-on-edge');
