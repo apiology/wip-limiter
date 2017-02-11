@@ -36,13 +36,21 @@ class Header {
   }
 
   countChildren() {
-    return 999;
+    return this.children().length;
+  }
+
+  children() {
+    let curNode = this.header.nextSibling;
+    const childList = [];
+    while (curNode != null) {
+      childList.push(curNode);
+      curNode = curNode.nextSibling;
+    }
+    return childList;
   }
 
   markBackgroundColor() {
-    const headerTitle = this.title();
     const wipLimit = this.wipLimit();
-    console.log(`wipLimit of ${headerTitle} is ${wipLimit}`);
     if (wipLimit === null) {
       this.markAsUnderLimit();
     } else {
