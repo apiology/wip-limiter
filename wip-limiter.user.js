@@ -8,6 +8,23 @@
 
 console.log('starting script');
 
+((css) => {
+  const head = document.getElementsByTagName('head')[0];
+  if (!head) { return; }
+  const style = document.createElement('style');
+  style.type = 'text/css';
+  style.innerHTML = css;
+  head.appendChild(style);
+})(`
+  .wip-limit-under { }
+  .wip-limit-over {
+    background-color: rgb(214, 65, 65);
+  }
+  .wip-limit-on-edge {
+    background-color: rgb(239, 190, 67);
+  }
+`);
+
 class Header {
   constructor(header) {
     this.header = header;
