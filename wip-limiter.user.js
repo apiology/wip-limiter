@@ -85,6 +85,7 @@ class Header {
   markBackgroundColor() {
     const wipLimit = this.wipLimit();
     if (wipLimit === null) {
+      console.log(`Couldn't find WIP limit of ${this.title()}`);
       this.markAsUnderLimit();
     } else {
       const childCount = this.countChildren();
