@@ -78,7 +78,7 @@ const watchChanges = () => {
 // watchChanges();
 
 
-setInterval(markWholeDocument(), 1000);
+setInterval(markWholeDocument, 1000);
 console.log('setInterval run');
 
 
