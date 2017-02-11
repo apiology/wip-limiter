@@ -73,16 +73,13 @@ const watchChanges = () => {
   }
 };
 
-// var curLength=0;
-// setInterval(function(){
-//   if ($('.column-header').length!=curLength){
-//     curLength=$('.column-header').length;
-//     // do stuff here
-//   }
-// },100);
+// watchChanges();
+
+setInterval(() => {
+  markWholeDocument();
+}, 1000);
 
 
-watchChanges();
 if (document.body) {
   console.log('already loaded; running now');
   markWholeDocument();
