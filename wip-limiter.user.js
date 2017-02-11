@@ -41,12 +41,20 @@ class Header {
     return count;
   }
 
+  static isHeader(element) {
+    return element.classList.contains('bar-row');
+  }
+
   children() {
     let curNode = this.header.nextSibling;
     const childList = [];
     while (curNode != null) {
-      childList.push(curNode);
-      curNode = curNode.nextSibling;
+      if (Header.isHeader(curNode)) {
+        curNode = null;
+      } else {
+        childList.push(curNode);
+        curNode = curNode.nextSibling;
+      }
     }
     return childList;
   }
