@@ -9,9 +9,9 @@
 console.log('starting script');
 
 class Header {
-  constructor(header) {
-    this.header = header;
-  }
+  // constructor(header) {
+    // this.header = header;
+  // }
 
 
   // header.classList.contains("bar-row")
