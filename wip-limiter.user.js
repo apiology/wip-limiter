@@ -16,9 +16,6 @@ class Header {
 
   // header.classList.contains("bar-row")
   title() {
-    // look for child td with class = barRow-contents
-    // const td = header.getElementsByClassName('barRow-contents')
-    // return 'dummy_title';
     const textareas = this.header.getElementsByClassName('task-row-text-input');
     if (textareas.length !== 1) {
       return null;
@@ -37,29 +34,51 @@ class Header {
     }
     return null;
   }
-// const isOver = header => {
-//    header
-// }
+
+  countChildren() {
+    return 999;
+  }
+
+  markBackgroundColor() {
+    const headerTitle = this.title();
+    const wipLimit = this.wipLimit();
+    console.log(`wipLimit of ${headerTitle} is ${wipLimit}`);
+    if (wipLimit === null) {
+      this.markAsUnderLimit();
+    } else {
+      const childCount = this.countChildren();
+      if (wipLimit === childCount) {
+        this.markAsOnEdge();
+      } else if (wipLimit < childCount) {
+        this.markAsOverLimit();
+      } else {
+        this.markAsUnderLimit();
+      }
+    }
+  }
+
+  markAsOnEdge() {
+    console.log(`Marking ${this.title()} as on edge`);
+  }
+
+  markAsOverLimit() {
+    console.log(`Marking ${this.title()} as over limit`);
+  }
+
+  markAsUnderLimit() {
+    console.log(`Marking ${this.title()} as under limit`);
+  }
 }
 
 
-// let header = new Header();
-// console.log(header.title())
-
-const markWholeDocument = () => {
+setInterval(() => {
   console.log('starting to mark whole document');
   const headers = document.getElementsByClassName('bar-row');
-  // console.log(headers);
   for (const headerElement of headers) {
     const header = new Header(headerElement);
-    const headerTitle = header.title();
-    const wipLimit = header.wipLimit();
-    console.log(`wipLimit of ${headerTitle} is ${wipLimit}`);
+    header.markBackgroundColor();
   }
-};
-
-
-setInterval(markWholeDocument, 1000);
+}, 1000);
 console.log('setInterval run');
 
 
