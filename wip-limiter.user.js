@@ -27,9 +27,16 @@ class Header {
     return textareas[0].value;
   }
 
-// const wipLimit = header => {
-//
-// }
+  wipLimit() {
+    const headerTitle = this.title();
+    console.log(`title is ${headerTitle}`);
+    const wipFinder = /.*\[(\d*)\]:$/;
+    const results = wipFinder.exec(headerTitle);
+    if (results !== null) {
+      return parseInt(results[1], 10);
+    }
+    return null;
+  }
 // const isOver = header => {
 //    header
 // }
@@ -46,16 +53,8 @@ const markWholeDocument = () => {
   for (const headerElement of headers) {
     const header = new Header(headerElement);
     const headerTitle = header.title();
-    console.log(`title is ${headerTitle}`);
-    const wipFinder = /.*\[(\d*)\]:$/;
-    const results = wipFinder.exec(headerTitle);
-    console.log(`results is ${results}`);
-    if (results !== null) {
-      const wipLimit = parseInt(results[1], 10);
-      console.log(`wipLimit is ${wipLimit}`);
-    } else {
-      console.log(`No wipLimit on ${headerTitle}`);
-    }
+    const wipLimit = header.wipLimit();
+    console.log(`wipLimit of ${headerTitle} is ${wipLimit}`);
   }
 };
 
