@@ -102,8 +102,10 @@ class Header {
     const all = this.headerAndChildren();
     let subElements = [];
     for (const task of all) {
-      subElements =
-        subElements.concat(task.getElementsByClassName('task-row-overlay'));
+      const overlays = task.getElementsByClassName('task-row-overlay');
+      if (overlays !== null) {
+        subElements = subElements.concat(overlays);
+      }
     }
     return all.concat(subElements);
   }
