@@ -3,5 +3,13 @@ plugins:
   - import
 env:
   browser: true
+  
 rules:
   no-console: 0
+  no-restricted-syntax:
+    - error # from airbnb
+    - ForInStatement # from airbnb
+    # - ForOfStatement # from airbnb - not sure why this wouldn't be allowed...
+    - LabeledStatement # from airbnb
+    - WithStatement # from airbnb
+                                      
