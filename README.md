@@ -2,6 +2,8 @@
 
 Note - this WIP Limiter is a work in progress - don't bother to try to use it yet!
 
+TODO: Extension: http://extensionizr.com/!#{"modules":["hidden-mode","with-persistent-bg","no-bg","no-options","no-override","inject-js","jquerymin"],"boolean_perms":[],"match_ptrns":[]}
+
 # WIP Limiter
 
 This is a userscript you can install into your browser to get a visual
@@ -20,24 +22,11 @@ TODO: Add screenshot GIF if possible
 
 ## Installing
 
-Install [Tampermonkey](https://tampermonkey.net/) into your browser.
-
-
-Download the wip-limiter.user.js file from this Repo.  Go to Settings
-| Extensions.  Drag the wip-limiter.user.js file onto your browser
-window.
-
-To install, double click on wip-limiter.user.js; this should launch
-your browser's userscript loader.
+1. Install [Tampermonkey](https://tampermonkey.net/) into your browser.
+2. Click [here](https://github.com/apiology/wip-limiter/raw/master/wip-limiter.user.js)
 
 ## Contributions
 
 PRs and issues welcome!
 
 I use this in Chrome, but definitely file an issue if you have issues in other browsers!
-
-Documentation for userscripts in Chrome
-is
-[here](https://www.chromium.org/developers/design-documents/user-scripts).
-
-TODO: Extension: http://extensionizr.com/!#{"modules":["hidden-mode","with-persistent-bg","no-bg","no-options","no-override","inject-js","jquerymin"],"boolean_perms":[],"match_ptrns":[]}
