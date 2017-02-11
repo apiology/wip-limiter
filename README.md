@@ -1,5 +1,9 @@
 # WIP Limiter
 
+Note - this WIP Limiter is a work in progress - don't bother to try to use it yet!
+
+# WIP Limiter
+
 This is a userscript you can install into your browser to get a visual
 hint when your Kanban-style WIP limit has been exceeded.
 
@@ -16,7 +20,8 @@ TODO: Add screenshot GIF if possible
 
 ## Installing
 
-### Chrome
+Install [Tampermonkey](https://tampermonkey.net/) into your browser.
+
 
 Download the wip-limiter.user.js file from this Repo.  Go to Settings
 | Extensions.  Drag the wip-limiter.user.js file onto your browser
@@ -34,3 +39,5 @@ I use this in Chrome, but definitely file an issue if you have issues in other b
 Documentation for userscripts in Chrome
 is
 [here](https://www.chromium.org/developers/design-documents/user-scripts).
+
+TODO: Extension: http://extensionizr.com/!#{"modules":["hidden-mode","with-persistent-bg","no-bg","no-options","no-override","inject-js","jquerymin"],"boolean_perms":[],"match_ptrns":[]}
