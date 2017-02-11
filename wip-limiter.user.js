@@ -18,12 +18,13 @@ class Header {
   title() {
     // look for child td with class = barRow-contents
     // const td = header.getElementsByClassName('barRow-contents')
-    const textareas = this.header.getElementsByClassName('task-row-text-input');
-    if (textareas.length !== 1) {
-      return null;
-    }
+    return 'dummy_title';
+    // const textareas = this.header.getElementsByClassName('task-row-text-input');
+    // if (textareas.length !== 1) {
+    //   return null;
+    // }
 
-    return textareas[0].value;
+    // return textareas[0].value;
   }
 
 // const wipLimit = header => {
