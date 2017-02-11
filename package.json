@@ -1,0 +1,16 @@
+{
+  "name": "wip-limiter",
+  "version": "1.0.0",
+  "description": "Add visual WIP limit to webapps using a userscript",
+  "main": "wip-limiter.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vince Broz",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^3.15.0",
+    "eslint-config-airbnb-base": "^11.1.0",
+    "eslint-plugin-import": "^2.2.0"
+  }
+}
