@@ -24,7 +24,7 @@ console.log('starting script');
     background-color: rgb(239, 190, 67);
   }
   .task-row-overlay {
-    background-color: children
+    background-color: rgb(214, 65, 65);
   }
 `);
 
