@@ -6,8 +6,6 @@
 // @require http://code.jquery.com/jquery-latest.js
 // ==/UserScript==
 
-console.log('starting script');
-
 ((css) => {
   const head = document.getElementsByTagName('head')[0];
   if (!head) { return; }
@@ -29,7 +27,6 @@ class Header {
   constructor(header) {
     this.header = header;
   }
-
 
   // header.classList.contains("bar-row")
   title() {
@@ -53,7 +50,6 @@ class Header {
 
   countChildren() {
     const count = this.children().length;
-    console.log(`Size of ${this.title()} is ${count}`);
     return count;
   }
 
@@ -111,44 +107,26 @@ class Header {
   }
 
   markAsOnEdge() {
-    console.log(`Marking ${this.title()} as on edge`);
     for (const child of this.elementsToMark()) {
-      if (child.classList != null) {
-        child.classList.remove('wip-limit-under');
-        child.classList.remove('wip-limit-over');
-        child.classList.add('wip-limit-on-edge');
-      } else {
-        console.log("Couldn't find classList on:");
-        console.log(child);
-      }
+      child.classList.remove('wip-limit-under');
+      child.classList.remove('wip-limit-over');
+      child.classList.add('wip-limit-on-edge');
     }
   }
 
   markAsOverLimit() {
-    console.log(`Marking ${this.title()} as over limit`);
     for (const child of this.elementsToMark()) {
-      if (child.classList != null) {
-        child.classList.remove('wip-limit-under');
-        child.classList.add('wip-limit-over');
-        child.classList.remove('wip-limit-on-edge');
-      } else {
-        console.log("Couldn't find classList on:");
-        console.log(child);
-      }
+      child.classList.remove('wip-limit-under');
+      child.classList.add('wip-limit-over');
+      child.classList.remove('wip-limit-on-edge');
     }
   }
 
   markAsUnderLimit() {
-    console.log(`Marking ${this.title()} as under limit`);
     for (const child of this.elementsToMark()) {
-      if (child.classList != null) {
-        child.classList.add('wip-limit-under');
-        child.classList.remove('wip-limit-over');
-        child.classList.remove('wip-limit-on-edge');
-      } else {
-        console.log("Couldn't find classList on:");
-        console.log(child);
-      }
+      child.classList.add('wip-limit-under');
+      child.classList.remove('wip-limit-over');
+      child.classList.remove('wip-limit-on-edge');
     }
   }
 }
