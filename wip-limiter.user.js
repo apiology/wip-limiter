@@ -23,6 +23,9 @@ console.log('starting script');
   .wip-limit-on-edge {
     background-color: rgb(239, 190, 67);
   }
+  .task-row-overlay {
+    background-color: children
+  }
 `);
 
 class Header {
