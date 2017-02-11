@@ -51,6 +51,27 @@ const markWholeDocument = () => {
   }
 };
 
+
+const watchChanges = () => {
+  const target = document.getElementById('some-id');
+
+  // create an observer instance
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      console.log(mutation.type);
+    });
+  });
+
+  // configuration of the observer:
+  const config = { attributes: true, childList: true, characterData: true };
+
+  // pass in the target node, as well as the observer options
+  observer.observe(target, config);
+
+  // later, you can stop observing
+  // observer.disconnect();
+};
+
 // var curLength=0;
 // setInterval(function(){
 //   if ($('.column-header').length!=curLength){
@@ -60,6 +81,7 @@ const markWholeDocument = () => {
 // },100);
 
 
+watchChanges();
 if (document.body) {
   console.log('already loaded; running now');
   markWholeDocument();
