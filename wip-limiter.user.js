@@ -113,27 +113,42 @@ class Header {
   markAsOnEdge() {
     console.log(`Marking ${this.title()} as on edge`);
     for (const child of this.elementsToMark()) {
-      child.classList.remove('wip-limit-under');
-      child.classList.remove('wip-limit-over');
-      child.classList.add('wip-limit-on-edge');
+      if (child.classList != null) {
+        child.classList.remove('wip-limit-under');
+        child.classList.remove('wip-limit-over');
+        child.classList.add('wip-limit-on-edge');
+      } else {
+        console.log("Couldn't find classList on:");
+        console.log(child);
+      }
     }
   }
 
   markAsOverLimit() {
     console.log(`Marking ${this.title()} as over limit`);
     for (const child of this.elementsToMark()) {
-      child.classList.remove('wip-limit-under');
-      child.classList.add('wip-limit-over');
-      child.classList.remove('wip-limit-on-edge');
+      if (child.classList != null) {
+        child.classList.remove('wip-limit-under');
+        child.classList.add('wip-limit-over');
+        child.classList.remove('wip-limit-on-edge');
+      } else {
+        console.log("Couldn't find classList on:");
+        console.log(child);
+      }
     }
   }
 
   markAsUnderLimit() {
     console.log(`Marking ${this.title()} as under limit`);
     for (const child of this.elementsToMark()) {
-      child.classList.add('wip-limit-under');
-      child.classList.remove('wip-limit-over');
-      child.classList.remove('wip-limit-on-edge');
+      if (child.classList != null) {
+        child.classList.add('wip-limit-under');
+        child.classList.remove('wip-limit-over');
+        child.classList.remove('wip-limit-on-edge');
+      } else {
+        console.log("Couldn't find classList on:");
+        console.log(child);
+      }
     }
   }
 }
