@@ -44,9 +44,10 @@ const markWholeDocument = () => {
   const headers = document.getElementsByClassName('bar-row');
   console.log(headers);
   if (headers.length > 0) {
-    const headerElement = headers[0];
-    const header = new Header(headerElement);
-    console.log(`title is ${header.title()}`);
+    console.log('found header');
+    // const headerElement = headers[0];
+    // const header = new Header(headerElement);
+    // console.log(`title is ${header.title()}`);
   } else {
     console.log('no headers found');
   }
