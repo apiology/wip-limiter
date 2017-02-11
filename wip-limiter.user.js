@@ -132,7 +132,10 @@ class Header {
 }
 
 setInterval(() => {
-  const headers = document.getElementsByClassName('bar-row');
+  let headers = document.getElementsByClassName('bar-row');
+  if (headers.length === 0) {
+    headers = document.getElementsByClassName('taskList');
+  }
   for (const headerElement of headers) {
     const header = new Header(headerElement);
     header.markBackgroundColor();
