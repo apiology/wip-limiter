@@ -36,7 +36,9 @@ class Header {
   }
 
   countChildren() {
-    return this.children().length;
+    const count = this.children().length;
+    console.log(`Size of ${this.title()} is ${count}`);
+    return count;
   }
 
   children() {
