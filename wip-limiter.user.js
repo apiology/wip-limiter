@@ -20,8 +20,8 @@ const xPathResultToArray = (result) => {
   return arr;
 };
 
-const fetchXPathArray = (e) => {
-  xPathResultToArray(document.evaluate('//*[@id="grid"]/tbody',
+const fetchXPathArray = (e, xpath) => {
+  xPathResultToArray(document.evaluate(xpath,
                                        e,
                                        null,
                                        XPathResult.ANY_TYPE,
