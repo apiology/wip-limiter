@@ -18,3 +18,4 @@ rules:
       - textAreaClassName
       - nextTaskSibling
       - isHeader
+  no-extend-native: 0

@@ -6,6 +6,9 @@
 // @require http://code.jquery.com/jquery-latest.js
 // ==/UserScript==
 
+Array.prototype.flatMap = lambda =>
+  Array.prototype.concat.apply([], this.map(lambda));
+
 ((css) => {
   const head = document.getElementsByTagName('head')[0];
   if (!head) { return; }
@@ -139,6 +142,12 @@ class MyTasksSection extends Section {
   textAreaClassName() {
     return 'task-row-text-input';
   }
+
+  static findTaskListElements() {
+    return Array.of(document.getElementsByClassName('grid'))
+      .filter(e => e.tagName === 'table')
+      .flatMap(e => Array.of(e.getElementsByTagName('tbody')))
+  }
 }
 
 class ProjectSection extends Section {
@@ -159,7 +168,31 @@ class ProjectSection extends Section {
   }
 }
 
+// create an observer instance
+const observer = new MutationObserver((mutations, observer) => {
+  mutations.forEach((mutation) => {
+    console.log('Mutation!');
+    console.log(mutation.type);
+    console.log(mutation.target);
+  });
+});
+
+// configuration of the observer:
+const config = { attributes: true, childList: true, characterData: true };
+
+// TODO: Better name than 'container'
+for (const taskListElement of MyTasksSection.findTaskListElements()) {
+  // pass in the target node, as well as the observer options
+  console.log('registering observer on:');
+  console.log(taskListElement);
+  // observer.observe(taskListElement, config);
+}
+
 setInterval(() => {
+  //
+  // The DOM/CSS for tasks in the 'my task' screen differs between the
+  // 'My Tasks' screen and the project screens:
+  //
   const myTasksSectionHeaders = document.getElementsByClassName('bar-row');
   for (const headerElement of myTasksSectionHeaders) {
     const header = new MyTasksSection(headerElement);
