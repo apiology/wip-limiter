@@ -145,9 +145,14 @@ class MyTasksSection extends Section {
   }
 
   static findTaskListElements() {
-    return Array.of(document.getElementsByClassName('grid'))
-      .filter(e => e.tagName === 'table')
-      .flatMap(e => Array.of(e.getElementsByTagName('tbody')));
+    const grids = Array.of(document.getElementsById('grid'));
+    console.log(`grids length: ${grids.length}`);
+    const tableGrids = grids.filter(e => e.tagName === 'table');
+    console.log(`tableGrids length: ${tableGrids.length}`);
+    const tbodys =
+          tableGrids.flatMap(e => Array.of(e.getElementsByTagName('tbody')));
+    console.log(`tbodys length: ${tbodys.length}`);
+    return tbodys;
   }
 }
 
