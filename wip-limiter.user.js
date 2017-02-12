@@ -20,13 +20,12 @@ const xPathResultToArray = (result) => {
   return arr;
 };
 
-const fetchXPathArray = (e, xpath) => {
-  xPathResultToArray(document.evaluate(xpath,
-                                       e,
-                                       null,
-                                       XPathResult.ANY_TYPE,
-                                       null));
-};
+const fetchXPathArray = (e, xpath) =>
+      xPathResultToArray(document.evaluate(xpath,
+                                           e,
+                                           null,
+                                           XPathResult.ANY_TYPE,
+                                           null));
 
 ((css) => {
   const head = document.getElementsByTagName('head')[0];
