@@ -123,7 +123,7 @@ class Header {
         curNode = null;
       } else {
         childList.push(curNode);
-        curNode = Header.nextProjectSibling(curNode);
+        curNode = this.nextTaskSibling(curNode);
       }
     }
     return childList;
