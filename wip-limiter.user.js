@@ -181,13 +181,30 @@ const observer = new MutationObserver((mutations, observer) => {
 // configuration of the observer:
 const config = { attributes: true, childList: true, characterData: true };
 
-// TODO: Better name than 'container'
-for (const taskListElement of MyTasksSection.findTaskListElements()) {
-  // pass in the target node, as well as the observer options
-  console.log('registering observer on:');
-  console.log(taskListElement);
-  // observer.observe(taskListElement, config);
+const subscribeToTaskListChanges = () => {
+  // TODO: Better name than 'container'
+  console.log('Looking for task list elements...');
+  for (const taskListElement of MyTasksSection.findTaskListElements()) {
+    // pass in the target node, as well as the observer options
+    console.log('registering observer on:');
+    console.log(taskListElement);
+    // observer.observe(taskListElement, config);
+  }
+  console.log('Done looking for task list elements.');
+};
+
+if (document.body) {
+  console.log('already loaded; running now');
+  subscribeToTaskListChanges();
+  console.log('ran!');
+} else {
+  console.log('registering listener');
+  document.addEventListener('DOMContentLoaded',
+                            subscribeToTaskListChanges,
+                            false);
+  console.log('registered listener');
 }
+
 
 setInterval(() => {
   //
