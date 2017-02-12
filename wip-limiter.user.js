@@ -10,6 +10,16 @@ Array.prototype.flatMap = function flatMap(lambda) {
   return Array.prototype.concat.apply([], this.map(lambda));
 };
 
+const xPathResultToArray = (result) => {
+  const arr = [];
+  let next = result.iterateNext();
+  while (next) {
+    arr.push(next);
+    next = result.iterateNext();
+  }
+  return arr;
+};
+
 ((css) => {
   const head = document.getElementsByTagName('head')[0];
   if (!head) { return; }
@@ -80,6 +90,7 @@ class Section {
     }
   }
 
+  // TODO: make functional
   elementsToMark() {
     const all = this.headerAndChildren();
     let subElements = [];
@@ -145,14 +156,11 @@ class MyTasksSection extends Section {
   }
 
   static findTaskListElements() {
-    const grids = Array.of(document.getElementsById('grid'));
-    console.log(`grids length: ${grids.length}`);
-    const tableGrids = grids.filter(e => e.tagName === 'table');
-    console.log(`tableGrids length: ${tableGrids.length}`);
-    const tbodys =
-          tableGrids.flatMap(e => Array.of(e.getElementsByTagName('tbody')));
-    console.log(`tbodys length: ${tbodys.length}`);
-    return tbodys;
+    return xPathResultToArray(document.evaluate('//*[@id="grid"]/tbody',
+                                                document,
+                                                null,
+                                                XPathResult.ANY_TYPE,
+                                                null));
   }
 }
 
