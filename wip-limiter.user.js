@@ -114,39 +114,12 @@ class Header {
       child.classList.remove('wip-limit-on-edge');
     }
   }
-}
-
-class MyTasksHeader extends Header {
-  static isHeader(element) {
-    return element.classList.contains('bar-row');
-  }
 
   children() {
-    let curNode = this.header.nextSibling;
+    let curNode = this.nextTaskSibling(this.header);
     const childList = [];
     while (curNode != null) {
-      if (Header.isHeader(curNode)) {
-        curNode = null;
-      } else {
-        childList.push(curNode);
-        curNode = curNode.nextSibling;
-      }
-    }
-    return childList;
-  }
-}
-
-class ProjectHeader extends Header {
-  static isHeader(element) {
-    return element.classList.contains('sectionRow');
-  }
-
-  // TODO: Can I make nextProjectSibling virtual, then hoist this up?
-  children() {
-    let curNode = Header.nextProjectSibling(this.header);
-    const childList = [];
-    while (curNode != null) {
-      if (Header.isHeader(curNode)) {
+      if (this.isHeader(curNode)) {
         curNode = null;
       } else {
         childList.push(curNode);
@@ -155,8 +128,24 @@ class ProjectHeader extends Header {
     }
     return childList;
   }
+}
 
-  static nextProjectSibling(row) {
+class MyTasksHeader extends Header {
+  isHeader(element) {
+    return element.classList.contains('bar-row');
+  }
+
+  nextTaskSibling(row) {
+    return row.nextSibling;
+  }
+}
+
+class ProjectHeader extends Header {
+  isHeader(element) {
+    return element.classList.contains('sectionRow');
+  }
+
+  nextTaskSibling(row) {
     const uncle = row.parentNode.nextSibling;
     if (uncle === null) {
       return null;
