@@ -223,8 +223,22 @@ if (document.body) {
   console.log('registered listener');
 }
 
+let registeredNewTaskListWatcher = false;
+
+// TODO: Subscribe to seeing new task list elements under the parent
+const subscribeToNewTaskListsAppearing = () => {
+  if (!registeredNewTaskListWatcher) {
+    console.log('looking for taskListParentElement');
+    const taskListParentElement = MyTasksSection.findTaskListParentElement();
+    if (taskListParentElement) {
+      console.log(`taskListParentElement: ${taskListParentElement}`);
+      registeredNewTaskListWatcher = true;
+    }
+  }
+};
 
 setInterval(() => {
+  subscribeToNewTaskListsAppearing();
   subscribeToTaskListChanges();
 
   //
