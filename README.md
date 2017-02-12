@@ -1,11 +1,5 @@
 # WIP Limiter
 
-Note - this WIP Limiter is a work in progress - don't bother to try to use it yet!
-
-TODO: Extension: http://extensionizr.com/!#{"modules":["hidden-mode","with-persistent-bg","no-bg","no-options","no-override","inject-js","jquerymin"],"boolean_perms":[],"match_ptrns":[]}
-
-# WIP Limiter
-
 This is a userscript you can install into your browser to get a visual
 hint when your Kanban-style WIP limit has been exceeded.
 
@@ -17,8 +11,6 @@ To use, change the titles of your sections or projects to include a
 string like '[5]' at the end of the title.  The 5 represents your
 maximum WIP limit; the background colors will now reflect whether you
 are at or beyond the limit you set.
-
-TODO: Add screenshot GIF if possible
 
 ## Installing
 
