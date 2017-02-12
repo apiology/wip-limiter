@@ -12,4 +12,9 @@ rules:
     # - ForOfStatement # from airbnb - not sure why this wouldn't be allowed...
     - LabeledStatement # from airbnb
     - WithStatement # from airbnb
-                                      
+  class-methods-use-this:
+    - 2
+    - exceptMethods:
+      - textAreaClassName
+      - nextTaskSibling
+      - isHeader
