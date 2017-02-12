@@ -242,20 +242,24 @@ let registeredNewTaskListWatcher = false;
 // TODO: Subscribe to seeing new task list elements under the parent
 const subscribeToNewTaskListsAppearing = () => {
   if (!registeredNewTaskListWatcher) {
-    console.log('looking for taskListParentElement');
     const taskListParentElement = MyTasksSection.findTaskListParentElement();
     if (taskListParentElement) {
       console.log(`taskListParentElement: ${taskListParentElement}`);
       registeredNewTaskListWatcher = true;
-    } else {
-      console.log('Could not find taskListParentElement');
+      subscribeToNewTaskListsUnderParent(taskListParentElement);
+      const currentTaskListElements =
+        MyTasksSection.findTaskListElements(taskListParentElement);
+      for (const taskListElement of currentTaskListElements) {
+        // TODO: Fix this method to look based on parent
+        subscribeToTaskListChanges(taskListElement);
+      }
+      subscribeToTaskListChanges();
     }
   }
 };
 
 setInterval(() => {
   subscribeToNewTaskListsAppearing();
-  subscribeToTaskListChanges();
 
   //
   // The DOM/CSS for tasks in the 'my task' screen differs between the
