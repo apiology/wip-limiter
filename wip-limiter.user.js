@@ -23,7 +23,7 @@
   }
 `);
 
-class Header {
+class Section {
   constructor(header) {
     this.header = header;
   }
@@ -127,7 +127,7 @@ class Header {
   }
 }
 
-class MyTasksHeader extends Header {
+class MyTasksSection extends Section {
   isHeader(element) {
     return element.classList.contains('bar-row');
   }
@@ -141,7 +141,7 @@ class MyTasksHeader extends Header {
   }
 }
 
-class ProjectHeader extends Header {
+class ProjectSection extends Section {
   isHeader(element) {
     return element.classList.contains('sectionRow');
   }
@@ -160,14 +160,14 @@ class ProjectHeader extends Header {
 }
 
 setInterval(() => {
-  const myTasksHeaders = document.getElementsByClassName('bar-row');
-  for (const headerElement of myTasksHeaders) {
-    const header = new MyTasksHeader(headerElement);
+  const myTasksSectionHeaders = document.getElementsByClassName('bar-row');
+  for (const headerElement of myTasksSectionHeaders) {
+    const header = new MyTasksSection(headerElement);
     header.markBackgroundColor();
   }
-  const projectHeaders = document.getElementsByClassName('sectionRow');
-  for (const headerElement of projectHeaders) {
-    const header = new ProjectHeader(headerElement);
+  const projectSectionHeaders = document.getElementsByClassName('sectionRow');
+  for (const headerElement of projectSectionHeaders) {
+    const header = new ProjectSection(headerElement);
     header.markBackgroundColor();
   }
 }, 1000);
