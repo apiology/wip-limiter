@@ -20,6 +20,14 @@ const xPathResultToArray = (result) => {
   return arr;
 };
 
+const fetchXPathArray = (e) => {
+  xPathResultToArray(document.evaluate('//*[@id="grid"]/tbody',
+                                       e,
+                                       null,
+                                       XPathResult.ANY_TYPE,
+                                       null));
+};
+
 ((css) => {
   const head = document.getElementsByTagName('head')[0];
   if (!head) { return; }
@@ -156,11 +164,18 @@ class MyTasksSection extends Section {
   }
 
   static findTaskListElements() {
-    return xPathResultToArray(document.evaluate('//*[@id="grid"]/tbody',
-                                                document,
-                                                null,
-                                                XPathResult.ANY_TYPE,
-                                                null));
+    // TODO: Scope this to a passed in tasklist parent
+    return fetchXPathArray(document, '//*[@id="grid"]/tbody');
+  }
+
+  static findTaskListParentElement() {
+    const arr = fetchXPathArray(document,
+                              '//div[@class="item-list-groups"]/span');
+    if (arr.length === 0) {
+      return null;
+    }
+
+    return arr[0];
   }
 }
 
@@ -233,6 +248,8 @@ const subscribeToNewTaskListsAppearing = () => {
     if (taskListParentElement) {
       console.log(`taskListParentElement: ${taskListParentElement}`);
       registeredNewTaskListWatcher = true;
+    } else {
+      console.log('Could not find taskListParentElement');
     }
   }
 };
