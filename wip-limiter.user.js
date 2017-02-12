@@ -63,7 +63,7 @@ class Header {
   }
 
   isMyTasks() {
-    return this.header.classList.contains('sectionRow');
+    return this.header.classList.contains('bar-row');
   }
 
   children() {
