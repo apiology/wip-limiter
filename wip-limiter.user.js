@@ -89,6 +89,7 @@ class Header {
       this.markAsUnderLimit();
     } else {
       const childCount = this.countChildren();
+      console.log(`Found ${childCount} children of ${this.title()}`);
       if (wipLimit === childCount) {
         this.markAsOnEdge();
       } else if (wipLimit < childCount) {
