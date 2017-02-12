@@ -78,10 +78,15 @@ class Header {
   static nextProjectSibling(row) {
     const uncle = row.parentNode.nextSibling;
     if (uncle === null) {
+      console.log('could not find uncle');
       return null;
     }
-
-    return uncle.firstChild;
+    console.log('uncle:');
+    console.log(uncle);
+    const child = uncle.firstChild;
+    console.log('uncle.firstChild:');
+    console.log(child);
+    return child;
   }
 
   childrenProject() {
