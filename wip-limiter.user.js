@@ -6,8 +6,9 @@
 // @require http://code.jquery.com/jquery-latest.js
 // ==/UserScript==
 
-Array.prototype.flatMap = lambda =>
-  Array.prototype.concat.apply([], this.map(lambda));
+Array.prototype.flatMap = function flatMap(lambda) {
+  return Array.prototype.concat.apply([], this.map(lambda));
+};
 
 ((css) => {
   const head = document.getElementsByTagName('head')[0];
@@ -146,7 +147,7 @@ class MyTasksSection extends Section {
   static findTaskListElements() {
     return Array.of(document.getElementsByClassName('grid'))
       .filter(e => e.tagName === 'table')
-      .flatMap(e => Array.of(e.getElementsByTagName('tbody')))
+      .flatMap(e => Array.of(e.getElementsByTagName('tbody')));
   }
 }
 
