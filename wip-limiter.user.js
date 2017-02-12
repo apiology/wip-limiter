@@ -29,11 +29,8 @@ class Header {
   }
 
   title() {
-    // TODO: Make this virtual
-    let textareas = this.header.getElementsByClassName('task-row-text-input');
-    if (textareas.length === 0) {
-      textareas = this.header.getElementsByClassName('taskName-input');
-    }
+    const textareas =
+      this.header.getElementsByClassName(this.textAreaClassName());
     if (textareas.length !== 1) {
       return null;
     }
@@ -138,6 +135,10 @@ class MyTasksHeader extends Header {
   nextTaskSibling(row) {
     return row.nextSibling;
   }
+
+  textAreaClassName() {
+    return 'task-row-text-input';
+  }
 }
 
 class ProjectHeader extends Header {
@@ -151,6 +152,10 @@ class ProjectHeader extends Header {
       return null;
     }
     return uncle.firstChild;
+  }
+
+  textAreaClassName() {
+    return 'taskName-input';
   }
 }
 
