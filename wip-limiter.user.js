@@ -181,16 +181,21 @@ const observer = new MutationObserver((mutations, observer) => {
 // configuration of the observer:
 const config = { attributes: true, childList: true, characterData: true };
 
+let registeredTaskLists = false;
+
 const subscribeToTaskListChanges = () => {
-  // TODO: Better name than 'container'
-  console.log('Looking for task list elements...');
-  for (const taskListElement of MyTasksSection.findTaskListElements()) {
-    // pass in the target node, as well as the observer options
-    console.log('registering observer on:');
-    console.log(taskListElement);
-    // observer.observe(taskListElement, config);
+  if (!registeredTaskLists) {
+    console.log('Looking for task list elements...');
+    for (const taskListElement of MyTasksSection.findTaskListElements()) {
+      // pass in the target node, as well as the observer options
+      console.log('registering observer on:');
+      console.log(taskListElement);
+
+      // assume that if we found one task list, they're all in place
+      registeredTaskLists = true;
+    }
+    console.log('Done looking for task list elements.');
   }
-  console.log('Done looking for task list elements.');
 };
 
 if (document.body) {
@@ -207,6 +212,8 @@ if (document.body) {
 
 
 setInterval(() => {
+  subscribeToTaskListChanges();
+
   //
   // The DOM/CSS for tasks in the 'my task' screen differs between the
   // 'My Tasks' screen and the project screens:
