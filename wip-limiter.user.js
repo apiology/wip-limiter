@@ -62,6 +62,10 @@ class Header {
       element.classList.contains('sectionRow');
   }
 
+  isMyTasks() {
+    return this.header.classList.contains('sectionRow');
+  }
+
   children() {
     // TODO: Turn these into subclasses
     if (this.isMyTasks()) {
