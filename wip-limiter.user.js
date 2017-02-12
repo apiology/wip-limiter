@@ -78,15 +78,9 @@ class Header {
   static nextProjectSibling(row) {
     const uncle = row.parentNode.nextSibling;
     if (uncle === null) {
-      console.log('could not find uncle');
       return null;
     }
-    console.log('uncle:');
-    console.log(uncle);
-    const child = uncle.firstChild;
-    console.log('uncle.firstChild:');
-    console.log(child);
-    return child;
+    return uncle.firstChild;
   }
 
   childrenProject() {
@@ -128,11 +122,9 @@ class Header {
   markBackgroundColor() {
     const wipLimit = this.wipLimit();
     if (wipLimit === null) {
-      console.log(`Couldn't find WIP limit of ${this.title()}`);
       this.markAsUnderLimit();
     } else {
       const childCount = this.countChildren();
-      console.log(`Found ${childCount} children of ${this.title()}`);
       if (wipLimit === childCount) {
         this.markAsOnEdge();
       } else if (wipLimit < childCount) {
@@ -182,10 +174,8 @@ class Header {
 
 setInterval(() => {
   let headers = document.getElementsByClassName('bar-row');
-  console.log(`Found ${headers.length} using bar-row`);
   if (headers.length === 0) {
     headers = document.getElementsByClassName('sectionRow');
-    console.log(`Found ${headers.length} using sectionRow`);
   }
   for (const headerElement of headers) {
     const header = new Header(headerElement);
