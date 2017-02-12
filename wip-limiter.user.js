@@ -57,11 +57,45 @@ class Header {
   }
 
   static isHeader(element) {
+    // TODO: Split this up via subclass
     return element.classList.contains('bar-row') ||
       element.classList.contains('sectionRow');
   }
 
   children() {
+    // TODO: Turn these into subclasses
+    if (this.isMyTasks()) {
+      return this.childrenMyTasks();
+    }
+
+    return this.childrenProject();
+  }
+
+  static nextProjectSibling(row) {
+    const uncle = row.parentNode.nextSibling;
+    if (uncle === null) {
+      return null;
+    }
+
+    return uncle.firstChild;
+  }
+
+  childrenProject() {
+    let curNode = Header.nextProjectSibling(this.header);
+    const childList = [];
+    while (curNode != null) {
+      // TODO: Make isHeader() in a subclass
+      if (Header.isHeader(curNode)) {
+        curNode = null;
+      } else {
+        childList.push(curNode);
+        curNode = Header.nextProjectSibling(curNode);
+      }
+    }
+    return childList;
+  }
+
+  childrenMyTasks() {
     let curNode = this.header.nextSibling;
     const childList = [];
     while (curNode != null) {
