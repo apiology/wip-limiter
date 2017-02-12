@@ -28,8 +28,8 @@ class Header {
     this.header = header;
   }
 
-  // header.classList.contains("bar-row")
   title() {
+    // TODO: Make this virtual
     let textareas = this.header.getElementsByClassName('task-row-text-input');
     if (textareas.length === 0) {
       textareas = this.header.getElementsByClassName('taskName-input');
@@ -54,62 +54,6 @@ class Header {
   countChildren() {
     const count = this.children().length;
     return count;
-  }
-
-  static isHeader(element) {
-    // TODO: Split this up via subclass
-    return element.classList.contains('bar-row') ||
-      element.classList.contains('sectionRow');
-  }
-
-  isMyTasks() {
-    return this.header.classList.contains('bar-row');
-  }
-
-  children() {
-    // TODO: Turn these into subclasses
-    if (this.isMyTasks()) {
-      return this.childrenMyTasks();
-    }
-
-    return this.childrenProject();
-  }
-
-  static nextProjectSibling(row) {
-    const uncle = row.parentNode.nextSibling;
-    if (uncle === null) {
-      return null;
-    }
-    return uncle.firstChild;
-  }
-
-  childrenProject() {
-    let curNode = Header.nextProjectSibling(this.header);
-    const childList = [];
-    while (curNode != null) {
-      // TODO: Make isHeader() in a subclass
-      if (Header.isHeader(curNode)) {
-        curNode = null;
-      } else {
-        childList.push(curNode);
-        curNode = Header.nextProjectSibling(curNode);
-      }
-    }
-    return childList;
-  }
-
-  childrenMyTasks() {
-    let curNode = this.header.nextSibling;
-    const childList = [];
-    while (curNode != null) {
-      if (Header.isHeader(curNode)) {
-        curNode = null;
-      } else {
-        childList.push(curNode);
-        curNode = curNode.nextSibling;
-      }
-    }
-    return childList;
   }
 
   headerAndChildren() {
@@ -172,13 +116,64 @@ class Header {
   }
 }
 
-setInterval(() => {
-  let headers = document.getElementsByClassName('bar-row');
-  if (headers.length === 0) {
-    headers = document.getElementsByClassName('sectionRow');
+class MyTasksHeader extends Header {
+  static isHeader(element) {
+    return element.classList.contains('bar-row');
   }
-  for (const headerElement of headers) {
-    const header = new Header(headerElement);
+
+  children() {
+    let curNode = this.header.nextSibling;
+    const childList = [];
+    while (curNode != null) {
+      if (Header.isHeader(curNode)) {
+        curNode = null;
+      } else {
+        childList.push(curNode);
+        curNode = curNode.nextSibling;
+      }
+    }
+    return childList;
+  }
+}
+
+class ProjectHeader extends Header {
+  static isHeader(element) {
+    return element.classList.contains('sectionRow');
+  }
+
+  // TODO: Can I make nextProjectSibling virtual, then hoist this up?
+  children() {
+    let curNode = Header.nextProjectSibling(this.header);
+    const childList = [];
+    while (curNode != null) {
+      if (Header.isHeader(curNode)) {
+        curNode = null;
+      } else {
+        childList.push(curNode);
+        curNode = Header.nextProjectSibling(curNode);
+      }
+    }
+    return childList;
+  }
+
+  static nextProjectSibling(row) {
+    const uncle = row.parentNode.nextSibling;
+    if (uncle === null) {
+      return null;
+    }
+    return uncle.firstChild;
+  }
+}
+
+setInterval(() => {
+  const myTasksHeaders = document.getElementsByClassName('bar-row');
+  for (const headerElement of myTasksHeaders) {
+    const header = new MyTasksHeader(headerElement);
+    header.markBackgroundColor();
+  }
+  const projectHeaders = document.getElementsByClassName('sectionRow');
+  for (const headerElement of projectHeaders) {
+    const header = new ProjectHeader(headerElement);
     header.markBackgroundColor();
   }
 }, 1000);
