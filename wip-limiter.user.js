@@ -34,6 +34,9 @@ class Header {
     if (textareas.length === 0) {
       textareas = this.header.getElementsByClassName('taskName-input');
     }
+    if (textareas.length === 0) {
+      textareas = this.header.getElementsByClassName('TaskName-input');
+    }
     if (textareas.length !== 1) {
       return null;
     }
@@ -59,7 +62,8 @@ class Header {
   static isHeader(element) {
     // TODO: Split this up via subclass
     return element.classList.contains('bar-row') ||
-      element.classList.contains('sectionRow');
+      element.classList.contains('sectionRow') ||
+      element.classList.contains('SectionRow');
   }
 
   isMyTasks() {
