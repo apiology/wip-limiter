@@ -6,27 +6,6 @@
 // @require http://code.jquery.com/jquery-latest.js
 // ==/UserScript==
 
-Array.prototype.flatMap = function flatMap(lambda) {
-  return Array.prototype.concat.apply([], this.map(lambda));
-};
-
-const xPathResultToArray = (result) => {
-  const arr = [];
-  let next = result.iterateNext();
-  while (next) {
-    arr.push(next);
-    next = result.iterateNext();
-  }
-  return arr;
-};
-
-const fetchXPathArray = (e, xpath) =>
-      xPathResultToArray(document.evaluate(xpath,
-                                           e,
-                                           null,
-                                           XPathResult.ANY_TYPE,
-                                           null));
-
 ((css) => {
   const head = document.getElementsByTagName('head')[0];
   if (!head) { return; }
@@ -44,14 +23,17 @@ const fetchXPathArray = (e, xpath) =>
   }
 `);
 
-class Section {
+class Header {
   constructor(header) {
     this.header = header;
   }
 
+  // header.classList.contains("bar-row")
   title() {
-    const textareas =
-      this.header.getElementsByClassName(this.textAreaClassName());
+    let textareas = this.header.getElementsByClassName('task-row-text-input');
+    if (textareas.length === 0) {
+      textareas = this.header.getElementsByClassName('taskName-input');
+    }
     if (textareas.length !== 1) {
       return null;
     }
@@ -72,6 +54,62 @@ class Section {
   countChildren() {
     const count = this.children().length;
     return count;
+  }
+
+  static isHeader(element) {
+    // TODO: Split this up via subclass
+    return element.classList.contains('bar-row') ||
+      element.classList.contains('sectionRow');
+  }
+
+  isMyTasks() {
+    return this.header.classList.contains('bar-row');
+  }
+
+  children() {
+    // TODO: Turn these into subclasses
+    if (this.isMyTasks()) {
+      return this.childrenMyTasks();
+    }
+
+    return this.childrenProject();
+  }
+
+  static nextProjectSibling(row) {
+    const uncle = row.parentNode.nextSibling;
+    if (uncle === null) {
+      return null;
+    }
+    return uncle.firstChild;
+  }
+
+  childrenProject() {
+    let curNode = Header.nextProjectSibling(this.header);
+    const childList = [];
+    while (curNode != null) {
+      // TODO: Make isHeader() in a subclass
+      if (Header.isHeader(curNode)) {
+        curNode = null;
+      } else {
+        childList.push(curNode);
+        curNode = Header.nextProjectSibling(curNode);
+      }
+    }
+    return childList;
+  }
+
+  childrenMyTasks() {
+    let curNode = this.header.nextSibling;
+    const childList = [];
+    while (curNode != null) {
+      if (Header.isHeader(curNode)) {
+        curNode = null;
+      } else {
+        childList.push(curNode);
+        curNode = curNode.nextSibling;
+      }
+    }
+    return childList;
   }
 
   headerAndChildren() {
@@ -97,7 +135,6 @@ class Section {
     }
   }
 
-  // TODO: make functional
   elementsToMark() {
     const all = this.headerAndChildren();
     let subElements = [];
@@ -133,146 +170,15 @@ class Section {
       child.classList.remove('wip-limit-on-edge');
     }
   }
-
-  children() {
-    let curNode = this.nextTaskSibling(this.header);
-    const childList = [];
-    while (curNode != null) {
-      if (this.isHeader(curNode)) {
-        curNode = null;
-      } else {
-        childList.push(curNode);
-        curNode = this.nextTaskSibling(curNode);
-      }
-    }
-    return childList;
-  }
 }
-
-class MyTasksSection extends Section {
-  isHeader(element) {
-    return element.classList.contains('bar-row');
-  }
-
-  nextTaskSibling(row) {
-    return row.nextSibling;
-  }
-
-  textAreaClassName() {
-    return 'task-row-text-input';
-  }
-
-  static findTaskListElements() {
-    // TODO: Scope this to a passed in tasklist parent
-    return fetchXPathArray(document, '//*[@id="grid"]/tbody');
-  }
-
-  static findTaskListParentElement() {
-    const arr = fetchXPathArray(document,
-                              '//div[@class="item-list-groups"]/span');
-    if (arr.length === 0) {
-      return null;
-    }
-
-    return arr[0];
-  }
-}
-
-class ProjectSection extends Section {
-  isHeader(element) {
-    return element.classList.contains('sectionRow');
-  }
-
-  nextTaskSibling(row) {
-    const uncle = row.parentNode.nextSibling;
-    if (uncle === null) {
-      return null;
-    }
-    return uncle.firstChild;
-  }
-
-  textAreaClassName() {
-    return 'taskName-input';
-  }
-}
-
-// create an observer instance
-const observer = new MutationObserver((mutations, observer) => {
-  mutations.forEach((mutation) => {
-    console.log('Mutation!');
-    console.log(mutation.type);
-    console.log(mutation.target);
-  });
-});
-
-// configuration of the observer:
-const config = { attributes: true, childList: true, characterData: true };
-
-let registeredTaskLists = false;
-
-const subscribeToTaskListChanges = () => {
-  if (!registeredTaskLists) {
-    console.log('Looking for task list elements...');
-    for (const taskListElement of MyTasksSection.findTaskListElements()) {
-      // pass in the target node, as well as the observer options
-      console.log('registering observer on:');
-      console.log(taskListElement);
-
-      // assume that if we found one task list, they're all in place
-      registeredTaskLists = true;
-    }
-    console.log('Done looking for task list elements.');
-  }
-};
-
-if (document.body) {
-  console.log('already loaded; running now');
-  subscribeToTaskListChanges();
-  console.log('ran!');
-} else {
-  console.log('registering listener');
-  document.addEventListener('DOMContentLoaded',
-                            subscribeToTaskListChanges,
-                            false);
-  console.log('registered listener');
-}
-
-let registeredNewTaskListWatcher = false;
-
-// TODO: Subscribe to seeing new task list elements under the parent
-const subscribeToNewTaskListsAppearing = () => {
-  if (!registeredNewTaskListWatcher) {
-    const taskListParentElement = MyTasksSection.findTaskListParentElement();
-    if (taskListParentElement) {
-      console.log(`taskListParentElement: ${taskListParentElement}`);
-      registeredNewTaskListWatcher = true;
-      subscribeToNewTaskListsUnderParent(taskListParentElement);
-      const currentTaskListElements =
-        MyTasksSection.findTaskListElements(taskListParentElement);
-      for (const taskListElement of currentTaskListElements) {
-        // TODO: Fix this method to look based on parent
-        subscribeToTaskListChanges(taskListElement);
-      }
-      subscribeToTaskListChanges();
-    }
-  }
-};
 
 setInterval(() => {
-  subscribeToNewTaskListsAppearing();
-
-  //
-  // The DOM/CSS for tasks in the 'my task' screen differs between the
-  // 'My Tasks' screen and the project screens:
-  //
-  const myTasksSectionHeaders = document.getElementsByClassName('bar-row');
-  for (const headerElement of myTasksSectionHeaders) {
-    const header = new MyTasksSection(headerElement);
-    header.markBackgroundColor();
+  let headers = document.getElementsByClassName('bar-row');
+  if (headers.length === 0) {
+    headers = document.getElementsByClassName('sectionRow');
   }
-  const projectSectionHeaders = document.getElementsByClassName('sectionRow');
-  for (const headerElement of projectSectionHeaders) {
-    const header = new ProjectSection(headerElement);
+  for (const headerElement of headers) {
+    const header = new Header(headerElement);
     header.markBackgroundColor();
   }
 }, 1000);
