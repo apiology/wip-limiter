@@ -15,7 +15,7 @@ are at or beyond the limit you set.
 ## Installing
 
 1. Install [Tampermonkey](https://tampermonkey.net/) into your browser.
-2. Click [here](https://github.com/apiology/wip-limiter/raw/46c01b3fe95d23e0d5ef30eb516cf515e4db7b82/wip-limiter.user.js)
+2. Click [here](https://github.com/apiology/wip-limiter/raw/master/wip-limiter.user.js)
 
 ## Contributions
 
