@@ -139,9 +139,12 @@ class Header {
     const all = this.headerAndChildren();
     let subElements = [];
     for (const task of all) {
-      const overlays = task.getElementsByClassName('task-row-overlay');
-      if (overlays !== null) {
-        subElements = subElements.concat(Array.from(overlays));
+      let items = task.getElementsByClassName('task-row-overlay');
+      if (items.length === 0) {
+        items = task.getElementsByClassName('itemRow');
+      }
+      if (items !== null) {
+        subElements = subElements.concat(Array.from(items));
       }
     }
     return all.concat(subElements);
@@ -176,6 +179,9 @@ setInterval(() => {
   let headers = document.getElementsByClassName('bar-row');
   if (headers.length === 0) {
     headers = document.getElementsByClassName('sectionRow');
+  }
+  if (headers.length === 0) {
+    headers = document.getElementsByClassName('SectionRow');
   }
   for (const headerElement of headers) {
     const header = new Header(headerElement);
