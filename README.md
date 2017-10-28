@@ -12,6 +12,10 @@ string like '[5]' at the end of the title.  The 5 represents your
 maximum WIP limit; the background colors will now reflect whether you
 are at or beyond the limit you set.
 
+If you don't want a task to be included against the WIP limit, you can
+add the 'fast' tag to it, indicating the task won't take long to knock
+out!
+
 ## Installing
 
 1. Install [Tampermonkey](https://tampermonkey.net/) into your browser.

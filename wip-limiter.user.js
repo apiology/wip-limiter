@@ -70,13 +70,23 @@ class Header {
     return this.header.classList.contains('bar-row');
   }
 
-  children() {
-    // TODO: Turn these into subclasses
+  rawChildren() {
     if (this.isMyTasks()) {
       return this.childrenMyTasks();
     }
 
     return this.childrenProject();
+  }
+
+  static includedChild(child) {
+    const pills = child.getElementsByClassName('Pill--clickable');
+    const labels = Array.prototype.map.call(pills, pill => pill.textContent);
+    return !labels.includes('fast');
+  }
+
+  children() {
+    // TODO: Turn these into subclasses
+    return this.rawChildren().filter(Header.includedChild);
   }
 
   static nextProjectSibling(row) {
@@ -118,7 +128,7 @@ class Header {
 
   headerAndChildren() {
     // shallow copy
-    const all = this.children().slice();
+    const all = this.rawChildren().slice();
     all.unshift(this.header);
     return all;
   }
