@@ -5,12 +5,12 @@
   "permissions": [
     "activeTab"
   ],
-  "background": {
-    "scripts": ["config.js", "dist/background.js"],
-    "persistent": false
-  },
-  "browser_action": {
-    "default_title": "Make this page red"
-  },
+  "content_scripts": [
+    {
+      "matches": ["https://app.asana.com/*"],
+      "js": ["dist/content-script.js"]
+    }
+  ],
+
   "manifest_version": 2
 }
