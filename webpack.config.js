@@ -1,7 +1,7 @@
 module.exports = {
-  entry: ['./src/background.js', './src/wip-limiter.js'],
+  entry: ['./src/content-script.js', './src/wip-limiter.js'],
   output: {
-    filename: 'background.js',
+    filename: 'content-script.js',
   },
   node: {
     // https://github.com/webpack-contrib/css-loader/issues/447
