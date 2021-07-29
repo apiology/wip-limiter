@@ -1,36 +1,14 @@
 # WIP Limiter
 
-This is a userscript you can install into your browser to get a visual
-hint when your Kanban-style WIP limit has been exceeded.
+[![CircleCI](https://circleci.com/gh/apiology/wip-limiter.svg?style=svg)](https://circleci.com/gh/apiology/wip-limiter)
 
-Currently supports:
+WARNING: This is not ready for use yet!
 
-* [Asana](https://www.asana.com)
+Chrome extension to get a visual hint when your Kanban-style WIP limit has been exceeded.
 
-To use, change the titles of your sections or projects to include a
-string like '[5]' at the end of the title.  The 5 represents your
-maximum WIP limit; the background colors will now reflect whether you
-are at or beyond the limit you set.
+## Usage
 
-TODO: Add screenshot GIF if possible
-
-## Installing
-
-### Chrome
-
-Download the wip-limiter.user.js file from this Repo.  Go to Settings
-| Extensions.  Drag the wip-limiter.user.js file onto your browser
-window.
-
-To install, double click on wip-limiter.user.js; this should launch
-your browser's userscript loader.
-
-## Contributions
-
-PRs and issues welcome!
-
-I use this in Chrome, but definitely file an issue if you have issues in other browsers!
-
-Documentation for userscripts in Chrome
-is
-[here](https://www.chromium.org/developers/design-documents/user-scripts).
+1. Go to chrome://extensions/
+2. Click the Load Unpacked Extension button.
+3. Choose the directory containing your Chrome extension code.
+4. Now you can work on your extension.
