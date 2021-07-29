@@ -1,38 +1,18 @@
 # WIP Limiter
 
-This is a userscript you can install into your browser to get a visual
-hint when your Kanban-style WIP limit has been exceeded.
+[![CircleCI](https://circleci.com/gh/apiology/wip-limiter.svg?style=svg)](https://circleci.com/gh/apiology/wip-limiter)
 
-Currently supports:
+WARNING: This is not ready for use yet!
 
-* [Asana](https://www.asana.com)
+Chrome extension to get a visual hint when your Kanban-style WIP limit has been exceeded.
 
-To use, change the titles of your sections or projects to include a
-string like '[5]' at the end of the title.  The 5 represents your
-maximum WIP limit; the background colors will now reflect whether you
-are at or beyond the limit you set.
+## Usage
 
 If you don't want a task to be included against the WIP limit, you can
 add the 'fast' tag to it, indicating the task won't take long to knock
 out!
 
-## Installing
-
-1. Install [Tampermonkey](https://tampermonkey.net/) into your browser.
-2. Click [here](https://github.com/apiology/wip-limiter/raw/main/wip-limiter.user.js)
-
-## Developing
-
-According
-to
-[this article](https://stackoverflow.com/questions/24542151/how-to-edit-tampermonkey-scripts-outside-of-the-browser#),
-you can fork this project, modify the file `local-pointer.user.js` and
-the link that follows to point to your local checkout, and then
-click
-[here](https://github.com/apiology/wip-limiter/raw/main/local-pointer.user.js)
-
-## Contributions
-
-PRs and issues welcome!
-
-I use this in Chrome, but definitely file an issue if you have issues in other browsers!
+1. Go to chrome://extensions/
+2. Click the Load Unpacked Extension button.
+3. Choose the directory containing your Chrome extension code.
+4. Now you can work on your extension.
