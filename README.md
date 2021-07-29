@@ -19,7 +19,7 @@ out!
 ## Installing
 
 1. Install [Tampermonkey](https://tampermonkey.net/) into your browser.
-2. Click [here](https://github.com/apiology/wip-limiter/raw/master/wip-limiter.user.js)
+2. Click [here](https://github.com/apiology/wip-limiter/raw/main/wip-limiter.user.js)
 
 ## Developing
 
@@ -29,7 +29,7 @@ to
 you can fork this project, modify the file `local-pointer.user.js` and
 the link that follows to point to your local checkout, and then
 click
-[here](https://github.com/apiology/wip-limiter/raw/master/local-pointer.user.js)
+[here](https://github.com/apiology/wip-limiter/raw/main/local-pointer.user.js)
 
 ## Contributions
 
