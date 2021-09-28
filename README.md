@@ -11,6 +11,6 @@ add the 'fast' tag to it, indicating the task won't take long to knock
 out!
 
 1. Go to chrome://extensions/
-2. Click the Load Unpacked Extension button.
+2. Click the Load unpacked button.
 3. Choose the directory containing your Chrome extension code.
 4. Now you can work on your extension.
