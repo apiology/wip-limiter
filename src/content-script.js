@@ -1,4 +1,4 @@
-const { processOnce } = require('./wip-limiter.js');
+const { processOnce } = require('./wip-limiter');
 
 setInterval(() => {
   processOnce();
