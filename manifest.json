@@ -6,7 +6,7 @@
     "activeTab"
   ],
   "background": {
-    "scripts": ["config.js", "dist/background.js"],
+    "scripts": ["dist/background.js"],
     "persistent": false
   },
   "browser_action": {
