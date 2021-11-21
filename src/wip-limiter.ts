@@ -1,3 +1,5 @@
+import { logError } from './error';
+
 ((css) => {
   const head = document.getElementsByTagName('head')[0];
   if (!head) { return; }
@@ -16,15 +18,21 @@
 `);
 
 class TaskGroup {
-  constructor(taskGroup) {
+  taskGroup: Element;
+
+  constructor(taskGroup: Element) {
     this.taskGroup = taskGroup;
   }
 
   // header.classList.contains("bar-row")
-  title() {
+  title(): string {
     const nameButtons = this.taskGroup.getElementsByClassName('PotColumnName-nameButton');
     const headerButton = nameButtons[0];
-    return headerButton.textContent;
+    const content = headerButton.textContent;
+    if (content == null) {
+      logError(`Could not find text under ${headerButton}`);
+    }
+    return content;
   }
 
   wipLimit() {
@@ -43,7 +51,7 @@ class TaskGroup {
     return count;
   }
 
-  children() {
+  children(): Element[] {
     const className = 'ProjectSpreadsheetGridRow-dropTargetRow';
     return Array.from(this.taskGroup.getElementsByClassName(className));
   }
@@ -66,7 +74,7 @@ class TaskGroup {
 
   elementsToMark() {
     const children = this.children();
-    return children.flatMap((child) => Array.from(child.getElementsByClassName('SpreadsheetGridTaskNameCell-rowNumber')));
+    return children.flatMap((child: Element) => Array.from(child.getElementsByClassName('SpreadsheetGridTaskNameCell-rowNumber')));
   }
 
   markAsOnEdge() {
@@ -94,14 +102,12 @@ class TaskGroup {
   }
 }
 
-function processOnce() {
+export const processOnce = () => {
   const taskGroups = Array.from(document.getElementsByClassName('TaskGroup--withHeader'));
   taskGroups.forEach((taskGroupElement) => {
     const taskGroup = new TaskGroup(taskGroupElement);
     taskGroup.markBackgroundColor();
   });
-}
-
-module.exports = {
-  processOnce,
 };
+
+export default 'processOnce';
