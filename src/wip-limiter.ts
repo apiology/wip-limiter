@@ -1,3 +1,10 @@
+/**
+ * wip-limiter module.
+ *
+ * Chrome extension to get a visual hint when your Kanban-style WIP
+ * limit has been exceeded in Asana.
+ */
+
 import { logError } from './error';
 
 ((css) => {
