@@ -1,3 +1,9 @@
+// webpack requires a 'require' here, which seems reasonable as it's,
+// you know, the thing that provides import to begin with:
+//
+// SyntaxError: Cannot use import statement outside a module
+const CopyPlugin = require('copy-webpack-plugin'); // eslint-disable-line @typescript-eslint/no-var-requires
+
 module.exports = {
   entry: {
     'content-script': ['./src/content-script.ts', './src/wip-limiter.ts'],
@@ -26,4 +32,9 @@ module.exports = {
   // 'inline-source-map' is suggested by https://webpack.js.org/guides/typescript/
   // 'cheap-module-source-map' is suggested by https://stackoverflow.com/questions/48047150/chrome-extension-compiled-by-webpack-throws-unsafe-eval-error
   devtool: 'cheap-module-source-map',
+  plugins: [
+    new CopyPlugin({
+      patterns: [{ from: 'static' }],
+    }),
+  ],
 };
