@@ -2,11 +2,16 @@
   "name": "WIP Limiter",
   "description": "Chrome extension to get a visual hint when your Kanban-style WIP limit has been exceeded.",
   "version": "2.0.0",
+  "icons": {
+    "16": "apiology-16x16.png",
+    "48": "apiology-48x48.png",
+    "128": "apiology-128x128.png"
+  },
   "permissions": [
     "activeTab"
   ],
   "background": {
-    "scripts": ["dist/background.js"],
+    "scripts": ["background.js"],
     "persistent": false
   },
   "browser_action": {
