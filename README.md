@@ -2,8 +2,9 @@
 
 [![CircleCI](https://circleci.com/gh/apiology/wip-limiter.svg?style=svg)](https://circleci.com/gh/apiology/wip-limiter)
 
-Chrome extension to get a visual hint when your Kanban-style WIP limit
-has been exceeded.  Currently supports Asana.
+Chrome extension to get a visual hint in your task-tracking tool when
+your Kanban-style WIP limit has been exceeded.  Currently supports
+Asana.
 
 ## Using
 
