@@ -5,6 +5,8 @@
 Get a visual hint when your Kanban-style WIP limit has been exceeded
 in your task-tracking tool.  Currently supports Asana.
 
+[![Available in the Chrome Web Store](https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/tbyBjqi7Zu733AAKA5n4.png)](https://chrome.google.com/webstore/detail/wip-limiter/ffneoeianbcmkdhmmiignglhghbhhcca)
+
 ## Using
 
 Add a number surrounded in square brackets at the end of your section
@@ -14,18 +16,8 @@ If you add five total tasks to that section, you'll see a yellow
 warning stripe on the left.  If you add more than five, that stripe
 will turn red.
 
+<img src="./docs/screenshot-1.png" alt="screenshot showing example task sections with color-based indicators" height="400"/>
+
 ## Legal
 
 Not created, maintained, reviewed, approved, or endorsed by Asana, Inc.
-
-## Installing
-
-This isn't in the Chrome App Store, so welcome to the Chrome Extension
-development experience!
-
-1. Run 'make' to create the bundle with webpack, or 'make start' to
-   start webpack in watch mode.
-2. Go to [chrome://extensions/](chrome://extensions/)
-3. Make sure 'Developer mode' is flipped on in the upper right.
-4. Click the 'Load unpacked' button.
-5. Choose the [dist](./dist) directory
