@@ -46,12 +46,16 @@ development.  See the `.envrc` file for detail.
 1. Fill in answers in 'Payments & distribution' section
 1. Save draft
 1. ... | Preview
+1. Review carefully
+1. Fix any issues spotted and repeat
 1. PR related changes in here
-1. Publish
 1. Submit for review
 1. Wait for approval
 1. Point to the published version in README.md
-1. Update README.md with screenshots
+1. Update README.md with CWS icon linking to listing - example: `[![Available in the Chrome Web Store](https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/tbyBjqi7Zu733AAKA5n4.png)](WEBSTORE LINK HERE)`
+1. Move 'Installing' in README.md to 'Installing local version' in DEVELOPMENT>md
+1. Update README.md with screenshots - example: `<img src="./docs/screenshot-1.png" alt="screenshot showing Asana task description and repeating above keystrokes" height="400"/>`
+1. Drop this section
 
 ## Releasing to Chrome Web Store
 
