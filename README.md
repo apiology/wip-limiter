@@ -16,6 +16,8 @@ If you add five total tasks to that section, you'll see a yellow
 warning stripe on the left.  If you add more than five, that stripe
 will turn red.
 
+<img src="./docs/screenshot-1.png" alt="screenshot showing example task sections with color-based indicators" height="400"/>
+
 ## Legal
 
 Not created, maintained, reviewed, approved, or endorsed by Asana, Inc.
