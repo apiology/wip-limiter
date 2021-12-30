@@ -5,6 +5,8 @@
 Get a visual hint when your Kanban-style WIP limit has been exceeded
 in your task-tracking tool.  Currently supports Asana.
 
+[![Available in the Chrome Web Store](https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/tbyBjqi7Zu733AAKA5n4.png)](https://chrome.google.com/webstore/detail/wip-limiter/ffneoeianbcmkdhmmiignglhghbhhcca)
+
 ## Using
 
 Add a number surrounded in square brackets at the end of your section
