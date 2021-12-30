@@ -1,7 +1,7 @@
 {
   "name": "WIP Limiter",
   "description": "Chrome extension to get a visual hint in your task-tracking tool when your Kanban-style WIP limit has been exceeded.  Currently supports Asana.",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "icons": {
     "16": "apiology-16x16.png",
     "48": "apiology-48x48.png",
