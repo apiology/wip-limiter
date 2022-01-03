@@ -5,8 +5,6 @@
  * limit has been exceeded in Asana.
  */
 
-import { logError } from './error';
-
 ((css) => {
   const head = document.getElementsByTagName('head')[0];
   if (!head) { return; }
@@ -37,7 +35,7 @@ class TaskGroup {
     const headerButton = nameButtons[0];
     const content = headerButton.textContent;
     if (content == null) {
-      logError(`Could not find text under ${headerButton}`);
+      throw new Error(`Could not find text under ${headerButton}`);
     }
     return content;
   }
