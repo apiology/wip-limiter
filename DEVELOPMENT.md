@@ -23,6 +23,7 @@ development.  See the `.envrc` file for detail.
 1. Finalize [promotional image](docs/wip-limiter.paint).
 1. Stage the .paint file in git.
 1. File | Save As... | png | `wip-limiter-440x280.png` | Save
+1. Plan out what screenshots you'd like to have in the gallery
 1. Generate 1280x800 (or scaled up) screenshots and save as
    `docs/screenshot-1-raw.png` and so on.
 1. Stage the screenshot raw files in git.
@@ -51,16 +52,17 @@ development.  See the `.envrc` file for detail.
 1. PR related changes in here
 1. Submit for review
 1. Wait for approval
-1. Point to the published version in README.md
 1. Update README.md with CWS icon linking to listing - example: `[![Available in the Chrome Web Store](https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/tbyBjqi7Zu733AAKA5n4.png)](WEBSTORE LINK HERE)`
-1. Move 'Installing' in README.md to 'Installing local version' in DEVELOPMENT>md
+1. Move 'Installing' in README.md to 'Installing local version' in DEVELOPMENT.md
 1. Update README.md with screenshots - example: `<img src="./docs/screenshot-1.png" alt="screenshot showing Asana task description and repeating above keystrokes" height="400"/>`
 1. Drop this section
 
 ## Releasing to Chrome Web Store
 
+1. PR a bump to the version in `static/manifest.json`
+1. `git checkout main && git pull`
 1. `make clean && make`
-2. Update [package.zip](./package.zip) in [developer dashboard](https://chrome.google.com/u/1/webstore/devconsole/d34ba2e8-8b5a-4417-889e-4047c35522d0) as `apiology-cws` user.
-3. Update description to match current README.md - manually translate
+1. Update [package.zip](./package.zip) in [developer dashboard](https://chrome.google.com/u/1/webstore/devconsole/d34ba2e8-8b5a-4417-889e-4047c35522d0) as `apiology-cws` user.
+1. Update description to match current README.md - manually translate
    from markdown to text.
-4. [Publish](https://developer.chrome.com/docs/webstore/update/)
+1. [Publish](https://developer.chrome.com/docs/webstore/update/)

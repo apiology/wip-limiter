@@ -8,6 +8,11 @@ Chrome extension to get a visual hint when your Kanban-style WIP limit has been 
 
 ## Using
 
+## Legal
+
+Not created, maintained, reviewed, approved, or endorsed by Asana, Inc.
+
+
 ## Installing
 
 This isn't in the Chrome App Store, so welcome to the Chrome Extension
