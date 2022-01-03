@@ -12,7 +12,8 @@
     "url": "git+https://github.com/apiology/wip-limiter.git"
   },
   "keywords": [
-    "chrome-extension"
+    "chrome-extension",
+    "asana"
   ],
   "author": "Vince Broz <vince@broz.cc>",
   "license": "MIT license",

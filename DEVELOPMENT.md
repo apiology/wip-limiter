@@ -18,11 +18,13 @@ development.  See the `.envrc` file for detail.
 
 ## Releasing to Chrome Web Store
 
+1. PR a bump to the version in `static/manifest.json`
+1. `git checkout main && git pull`
 1. `make clean && make`
-2. Update [package.zip](./package.zip) in [developer dashboard](https://chrome.google.com/u/1/webstore/devconsole/d34ba2e8-8b5a-4417-889e-4047c35522d0) as `apiology-cws` user.
-3. Update description to match current README.md - manually translate
+1. Update [package.zip](./package.zip) in [developer dashboard](https://chrome.google.com/u/1/webstore/devconsole/d34ba2e8-8b5a-4417-889e-4047c35522d0) as `apiology-cws` user.
+1. Update description to match current README.md - manually translate
    from markdown to text.
-4. [Publish](https://developer.chrome.com/docs/webstore/update/)
+1. [Publish](https://developer.chrome.com/docs/webstore/update/)
 
 ## Installing local version
 
