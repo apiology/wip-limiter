@@ -28,17 +28,21 @@ import TaskGroup from './task-group';
 const isSubtaskSectionElement = (e: Element) => e.classList.contains('SectionRow');
 
 const buildSubtaskSections = (elements: Element[]): SubtaskSection[] => {
-  let currentSectionElement = null;
-  let currentChildElements = [];
-  const subtaskSections = [];
+  let currentSectionElement: Element | null = null;
+  let currentChildElements: Element[] = [];
+  const subtaskSections: SubtaskSection[] = [];
+
+  const addSubtaskSection = () => {
+    if (currentSectionElement != null && currentChildElements.length > 0) {
+      const newSubtaskSection = new SubtaskSection(currentSectionElement,
+        currentChildElements);
+      subtaskSections.push(newSubtaskSection);
+    }
+  };
   for (const element of elements) {
     if (isSubtaskSectionElement(element)) {
       console.debug('Found a subtask section', element);
-      if (currentSectionElement != null && currentChildElements.length > 0) {
-        const newSubtaskSection = new SubtaskSection(currentSectionElement,
-          currentChildElements);
-        subtaskSections.push(newSubtaskSection);
-      }
+      addSubtaskSection();
       currentSectionElement = element;
       currentChildElements = [];
     } else {
@@ -46,6 +50,7 @@ const buildSubtaskSections = (elements: Element[]): SubtaskSection[] => {
       currentChildElements.push(element);
     }
   }
+  addSubtaskSection();
   return subtaskSections;
 };
 
