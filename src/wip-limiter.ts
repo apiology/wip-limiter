@@ -5,6 +5,9 @@
  * limit has been exceeded in Asana.
  */
 
+import SubtaskSection from './subtask-section';
+import TaskGroup from './task-group';
+
 ((css) => {
   const head = document.getElementsByTagName('head')[0];
   if (!head) { return; }
@@ -22,98 +25,29 @@
   }
 `);
 
-class TaskGroup {
-  taskGroup: Element;
+const isSubtaskSectionElement = (e: Element) => e.classList.contains('SectionRow');
 
-  constructor(taskGroup: Element) {
-    this.taskGroup = taskGroup;
-  }
-
-  // header.classList.contains("bar-row")
-  title(): string {
-    const nameButtons = this.taskGroup.getElementsByClassName('PotColumnName-nameButton');
-    const headerButton = nameButtons[0];
-    const content = headerButton.textContent;
-    if (content == null) {
-      throw new Error(`Could not find text under ${headerButton}`);
-    }
-    return content;
-  }
-
-  wipLimit() {
-    const title = this.title();
-    const wipFinder = /.*\[(\d*)\]$/;
-    const results = wipFinder.exec(title);
-    if (results !== null) {
-      return parseInt(results[1], 10);
-    }
-    return null;
-  }
-
-  countChildren() {
-    const children = this.children();
-    const count = children.length;
-    return count;
-  }
-
-  children(): Element[] {
-    const projectClassName = 'ProjectSpreadsheetGridRow-dropTargetRow';
-    console.debug({ taskGroup: this.taskGroup });
-    let tasks = Array.from(this.taskGroup.getElementsByClassName(projectClassName));
-    if (tasks.length === 0) {
-      const myTasksClassName = 'MyTasksSpreadsheetGridRow-dropTargetRow';
-      tasks = Array.from(this.taskGroup.getElementsByClassName(myTasksClassName));
-    }
-    return tasks;
-  }
-
-  markBackgroundColor() {
-    const wipLimit = this.wipLimit();
-    console.debug('found wip limit of ', wipLimit, ' for ', this.title());
-    if (wipLimit === null) {
-      this.markAsUnderLimit();
-    } else {
-      const childCount = this.countChildren();
-      console.debug('found child count of ', childCount, ' for ', this.title());
-      if (wipLimit === childCount) {
-        this.markAsOnEdge();
-      } else if (wipLimit < childCount) {
-        this.markAsOverLimit();
-      } else {
-        this.markAsUnderLimit();
+const buildSubtaskSections = (elements: Element[]): SubtaskSection[] => {
+  let currentSectionElement = null;
+  let currentChildElements = [];
+  const subtaskSections = [];
+  for (const element of elements) {
+    if (isSubtaskSectionElement(element)) {
+      console.debug('Found a subtask section', element);
+      if (currentSectionElement != null && currentChildElements.length > 0) {
+        const newSubtaskSection = new SubtaskSection(currentSectionElement,
+          currentChildElements);
+        subtaskSections.push(newSubtaskSection);
       }
+      currentSectionElement = element;
+      currentChildElements = [];
+    } else {
+      console.debug('Found a subtask child', element);
+      currentChildElements.push(element);
     }
   }
-
-  elementsToMark() {
-    const children = this.children();
-    return children.flatMap((child: Element) => Array.from(child.getElementsByClassName('SpreadsheetGridTaskNameCell-rowNumber')));
-  }
-
-  markAsOnEdge() {
-    this.elementsToMark().forEach((child) => {
-      child.classList.remove('wip-limit-under');
-      child.classList.remove('wip-limit-over');
-      child.classList.add('wip-limit-on-edge');
-    });
-  }
-
-  markAsOverLimit() {
-    this.elementsToMark().forEach((child) => {
-      child.classList.remove('wip-limit-under');
-      child.classList.add('wip-limit-over');
-      child.classList.remove('wip-limit-on-edge');
-    });
-  }
-
-  markAsUnderLimit() {
-    this.elementsToMark().forEach((child) => {
-      child.classList.add('wip-limit-under');
-      child.classList.remove('wip-limit-over');
-      child.classList.remove('wip-limit-on-edge');
-    });
-  }
-}
+  return subtaskSections;
+};
 
 export const processOnce = () => {
   console.debug('WIP limiter - processOnce');
@@ -122,6 +56,14 @@ export const processOnce = () => {
   taskGroups.forEach((taskGroupElement) => {
     const taskGroup = new TaskGroup(taskGroupElement);
     taskGroup.markBackgroundColor();
+  });
+
+  const subtaskItemRows = Array.from(document.getElementsByClassName('ItemRow'));
+  console.debug({ subtaskItemRows });
+  const subtaskSections = buildSubtaskSections(subtaskItemRows);
+  console.debug({ subtaskSections });
+  subtaskSections.forEach((subtaskSection) => {
+    subtaskSection.markBackgroundColor();
   });
 };
 
