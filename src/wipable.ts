@@ -13,7 +13,7 @@ export default abstract class Wipable {
 
   wipLimit() {
     const title = this.title();
-    const wipFinder = /.*\[(\d*)\]$/;
+    const wipFinder = /.*\[(\d*)\]:?$/;
     const results = wipFinder.exec(title);
     if (results !== null) {
       return parseInt(results[1], 10);
