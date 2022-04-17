@@ -1,7 +1,7 @@
 {
   "name": "WIP Limiter",
   "description": "Get a visual hint when your Kanban-style WIP limit has been exceeded in your task-tracking tool.  Currently supports Asana.",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "icons": {
     "16": "apiology-16x16.png",
     "48": "apiology-48x48.png",
