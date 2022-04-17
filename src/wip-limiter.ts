@@ -57,16 +57,24 @@ class TaskGroup {
   }
 
   children(): Element[] {
-    const className = 'ProjectSpreadsheetGridRow-dropTargetRow';
-    return Array.from(this.taskGroup.getElementsByClassName(className));
+    const projectClassName = 'ProjectSpreadsheetGridRow-dropTargetRow';
+    console.debug({ taskGroup: this.taskGroup });
+    let tasks = Array.from(this.taskGroup.getElementsByClassName(projectClassName));
+    if (tasks.length === 0) {
+      const myTasksClassName = 'MyTasksSpreadsheetGridRow-dropTargetRow';
+      tasks = Array.from(this.taskGroup.getElementsByClassName(myTasksClassName));
+    }
+    return tasks;
   }
 
   markBackgroundColor() {
     const wipLimit = this.wipLimit();
+    console.debug('found wip limit of ', wipLimit, ' for ', this.title());
     if (wipLimit === null) {
       this.markAsUnderLimit();
     } else {
       const childCount = this.countChildren();
+      console.debug('found child count of ', childCount, ' for ', this.title());
       if (wipLimit === childCount) {
         this.markAsOnEdge();
       } else if (wipLimit < childCount) {
@@ -108,7 +116,9 @@ class TaskGroup {
 }
 
 export const processOnce = () => {
+  console.debug('WIP limiter - processOnce');
   const taskGroups = Array.from(document.getElementsByClassName('TaskGroup--withHeader'));
+  console.debug({ taskGroups });
   taskGroups.forEach((taskGroupElement) => {
     const taskGroup = new TaskGroup(taskGroupElement);
     taskGroup.markBackgroundColor();
