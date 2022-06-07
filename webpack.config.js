@@ -1,12 +1,14 @@
-// webpack requires a 'require' here, which seems reasonable as it's,
-// you know, the thing that provides import to begin with:
-//
-// SyntaxError: Cannot use import statement outside a module
-const CopyPlugin = require('copy-webpack-plugin'); // eslint-disable-line @typescript-eslint/no-var-requires
+import path from 'path';
+import CopyPlugin from 'copy-webpack-plugin';
+import ResolveTypeScriptPlugin from 'resolve-typescript-plugin';
+import { fileURLToPath } from 'url';
 
-module.exports = {
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
+
+export default {
   entry: {
-    background: ['./src/background.ts', './src/wip-limiter.ts'],
+    background: ['./src/background.ts'],
   },
   // https://webpack.js.org/guides/typescript/
   module: {
@@ -23,10 +25,12 @@ module.exports = {
   //
   // https://stackoverflow.com/questions/43595555/webpack-cant-resolve-typescript-modules
   resolve: {
-    extensions: ['.ts', '.js', '.json'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+    plugins: [new ResolveTypeScriptPlugin()],
   },
   mode: 'development', // override with webpack --mode=production on CLI builds
   output: {
+    path: path.resolve(dirname, 'extension-dist'),
     filename: '[name].js',
   },
   // 'inline-source-map' is suggested by https://webpack.js.org/guides/typescript/
