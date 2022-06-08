@@ -8,7 +8,7 @@ const dirname = path.dirname(filename);
 
 export default {
   entry: {
-    'content-script': ['./src/content-script.ts', './src/wip-limiter.ts'],
+    'content-script': ['./src/chrome-extension/content-script.ts'],
   },
   // https://webpack.js.org/guides/typescript/
   module: {

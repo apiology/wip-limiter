@@ -25,8 +25,6 @@ build-chrome-extension: webpack
 
 build: build-chrome-extension
 
-package: package-chrome-extension
-
 default: build package quality ## run build and package up for the Chrome Extension
 
 package: package-chrome-extension

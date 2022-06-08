@@ -4,7 +4,7 @@
  * from wip-limiter.js.
  */
 
-import { processOnce } from './wip-limiter';
+import { processOnce } from '../wip-limiter';
 
 setInterval(() => {
   processOnce();
