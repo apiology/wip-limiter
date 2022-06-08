@@ -8,7 +8,7 @@ const dirname = path.dirname(filename);
 
 export default {
   entry: {
-    background: ['./src/background.ts'],
+    background: ['./src/chrome-extension/background.ts'],
   },
   // https://webpack.js.org/guides/typescript/
   module: {
