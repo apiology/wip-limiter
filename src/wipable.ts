@@ -48,7 +48,9 @@ export default abstract class Wipable {
   }
 
   markAsOverLimit() {
-    this.elementsToMark().forEach((child) => {
+    const elements = this.elementsToMark();
+    console.debug('marking as over limit:', elements);
+    elements.forEach((child) => {
       child.classList.remove('wip-limit-under');
       child.classList.add('wip-limit-over');
       child.classList.remove('wip-limit-on-edge');
