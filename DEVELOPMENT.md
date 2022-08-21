@@ -25,6 +25,14 @@ development.  See the `.envrc` file for detail.
 4. Click the 'Load unpacked' button.
 5. Choose the [dist/chrome-extension](./dist/chrome-extension) directory
 
+## Testing changes
+
+1. `make`
+2. Head to 'wip-limiter-example' project and verify each appears as
+   described in section header.
+3. Head to your 'My Tasks' page and set up WIP limits to test.
+4. Go into a task and set up WIP limits to test.
+
 ## Releasing to Chrome Web Store
 
 1. Update screenshots in `docs/` for any new features
