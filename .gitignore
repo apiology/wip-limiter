@@ -52,9 +52,6 @@ requirements_dev.txt.installed
 # From package.json and npm
 /node_modules
 
-# From webpack
-/extension-dist
-
 # From release process
 /package.zip
 
