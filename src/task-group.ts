@@ -33,6 +33,6 @@ export default class TaskGroup extends Wipable {
   elementsToMark() {
     const children = this.children();
     console.debug('children:', children);
-    return children.flatMap((child: Element) => Array.from(child.getElementsByClassName('SpreadsheetGridTaskNameAndDetailsCell-rowNumber')));
+    return children.flatMap((child: Element) => Array.from(child.getElementsByClassName('SpreadsheetGridTaskNameAndDetailsCellGroup-rowNumber')));
   }
 }
