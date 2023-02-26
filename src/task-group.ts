@@ -1,6 +1,6 @@
-import Wipable from './wipable';
+import { Wipable } from './wipable.js';
 
-export default class TaskGroup extends Wipable {
+export class TaskGroup extends Wipable {
   taskGroup: Element;
 
   constructor(taskGroup: Element) {
@@ -12,7 +12,7 @@ export default class TaskGroup extends Wipable {
   title(): string {
     const nameButtons = this.taskGroup.getElementsByClassName('PotColumnName-nameButton');
     const headerButton = nameButtons[0];
-    const content = headerButton.textContent;
+    const content = headerButton?.textContent;
     if (content == null) {
       throw new Error(`Could not find text under ${headerButton}`);
     }

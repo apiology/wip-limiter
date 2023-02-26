@@ -1,4 +1,4 @@
-export default abstract class Wipable {
+export abstract class Wipable {
   abstract title(): string;
 
   abstract elementsToMark(): Element[];
@@ -16,7 +16,10 @@ export default abstract class Wipable {
     const wipFinder = /.*\[(\d*)\]:?$/;
     const results = wipFinder.exec(title);
     if (results !== null) {
-      return parseInt(results[1], 10);
+      const limit = results[1];
+      if (limit != null) {
+        return parseInt(limit, 10);
+      }
     }
     return null;
   }
