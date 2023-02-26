@@ -2,14 +2,16 @@
     "_template": "https://github.com/apiology/cookiecutter-chrome-extension",
     "asana_api": "no",
     "asana_related": "yes",
-    "chrome_extension_options": "no",
+    "content_script": "no",
     "email": "vince@broz.cc",
     "full_name": "Vince Broz",
     "github_username": "apiology",
     "open_source_license": "MIT license",
+    "options": "no",
     "project_name": "WIP Limiter",
     "project_short_description": "Chrome extension to get a visual hint when your Kanban-style WIP limit has been exceeded.",
     "project_slug": "wip-limiter",
+    "service_worker": "no",
     "type_of_github_repo": "public",
     "version": "2.0.0"
 }

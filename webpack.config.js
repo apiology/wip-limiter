@@ -6,9 +6,9 @@ import { fileURLToPath } from 'url';
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
+/* eslint-disable-next-line import/no-default-export */
 export default {
   entry: {
-    background: ['./src/chrome-extension/background.ts'],
   },
   // https://webpack.js.org/guides/typescript/
   module: {

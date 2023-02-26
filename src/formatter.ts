@@ -1,1 +1,3 @@
-export default abstract class Formatter {}
+export abstract class Formatter {
+  abstract escapeDescriptionPlainText(text: string): string;
+}

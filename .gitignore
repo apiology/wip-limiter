@@ -57,3 +57,12 @@ requirements_dev.txt.installed
 
 # Provided by user
 /config.js
+
+# from jest
+/coverage
+
+# from webpack
+/dist/chrome-extension
+
+# from yarn
+/yarn-error.log
