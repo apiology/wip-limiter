@@ -2,7 +2,7 @@
     "_template": "https://github.com/apiology/cookiecutter-chrome-extension",
     "asana_api": "no",
     "asana_related": "yes",
-    "content_script": "no",
+    "content_script": "yes",
     "email": "vince@broz.cc",
     "full_name": "Vince Broz",
     "github_username": "apiology",

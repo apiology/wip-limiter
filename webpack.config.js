@@ -9,6 +9,7 @@ const dirname = path.dirname(filename);
 /* eslint-disable-next-line import/no-default-export */
 export default {
   entry: {
+    'content-script': ['./src/chrome-extension/content-script.ts'],
   },
   // https://webpack.js.org/guides/typescript/
   module: {

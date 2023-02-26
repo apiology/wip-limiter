@@ -11,6 +11,12 @@
     "activeTab",
     "storage"
   ],
+  "content_scripts": [
+    {
+      "matches": ["https://app.asana.com/*"],
+      "js": ["content-script.js"]
+    }
+  ],
   "action": {
     "default_title": "Make this page red"
   },
