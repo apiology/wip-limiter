@@ -1,6 +1,6 @@
-import Wipable from './wipable';
+import { Wipable } from './wipable.js';
 
-export default class SubtaskSection extends Wipable {
+export class SubtaskSection extends Wipable {
   sectionElement: Element
 
   childElements: Element[]

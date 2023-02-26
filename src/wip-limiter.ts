@@ -4,9 +4,8 @@
  * Chrome extension to get a visual hint when your Kanban-style WIP
  * limit has been exceeded in Asana.
  */
-
-import SubtaskSection from './subtask-section';
-import TaskGroup from './task-group';
+import { SubtaskSection } from './subtask-section.js';
+import { TaskGroup } from './task-group.js';
 
 ((css) => {
   const head = document.getElementsByTagName('head')[0];
@@ -70,5 +69,3 @@ export const processOnce = () => {
     subtaskSection.markBackgroundColor();
   });
 };
-
-export default 'processOnce';

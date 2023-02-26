@@ -4,8 +4,19 @@
  * from wip-limiter.js.
  */
 
-import { processOnce } from '../wip-limiter';
+import { /* platform, */setPlatform } from '../platform.js';
+import { ChromeExtensionPlatform } from './chrome-extension-platform.js';
+import { processOnce } from '../wip-limiter.js';
 
-setInterval(() => {
-  processOnce();
-}, 1000);
+export function registerEventListeners() {
+  setInterval(() => {
+    processOnce();
+  }, 1000);
+}
+
+/* istanbul ignore next */
+if (typeof jest === 'undefined') {
+  const p = new ChromeExtensionPlatform();
+  setPlatform(p);
+  registerEventListeners();
+}
