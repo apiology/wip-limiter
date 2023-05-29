@@ -1,12 +1,14 @@
 import { Wipable } from './wipable.js';
 
 export class SubtaskSection extends Wipable {
-  sectionElement: Element
+  sectionElement: Element;
 
-  childElements: Element[]
+  childElements: Element[];
 
-  constructor(sectionElement: Element,
-    childElements: Element[]) {
+  constructor(
+    sectionElement: Element,
+    childElements: Element[]
+  ) {
     super();
     this.sectionElement = sectionElement;
     this.childElements = childElements;

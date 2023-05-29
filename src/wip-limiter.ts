@@ -32,8 +32,10 @@ const buildSubtaskSections = (elements: Element[]): SubtaskSection[] => {
 
   const addSubtaskSection = () => {
     if (currentSectionElement != null && currentChildElements.length > 0) {
-      const newSubtaskSection = new SubtaskSection(currentSectionElement,
-        currentChildElements);
+      const newSubtaskSection = new SubtaskSection(
+        currentSectionElement,
+        currentChildElements
+      );
       subtaskSections.push(newSubtaskSection);
     }
   };
