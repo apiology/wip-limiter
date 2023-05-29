@@ -20,12 +20,16 @@ export class TaskGroup extends Wipable {
   }
 
   children(): Element[] {
-    const projectClassName = 'ProjectSpreadsheetGridRow-dropTargetRow';
+    const legacyProjectClassName = 'ProjectSpreadsheetGridRow-dropTargetRow';
     console.debug({ taskGroup: this.taskGroup });
-    let tasks = Array.from(this.taskGroup.getElementsByClassName(projectClassName));
+    let tasks = Array.from(this.taskGroup.getElementsByClassName(legacyProjectClassName));
     if (tasks.length === 0) {
       const myTasksClassName = 'MyTasksSpreadsheetGridRow-dropTargetRow';
       tasks = Array.from(this.taskGroup.getElementsByClassName(myTasksClassName));
+      if (tasks.length === 0) {
+        const projectClassName = 'SpreadsheetTaskRow';
+        tasks = Array.from(this.taskGroup.getElementsByClassName(projectClassName));
+      }
     }
     return tasks;
   }
