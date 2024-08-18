@@ -1,4 +1,5 @@
 {
+    "_checkout": null,
     "_output_dir": "/Users/broz/src/wip-limiter/.git/cookiecutter",
     "_repo_dir": "/Users/broz/.cookiecutters/cookiecutter-chrome-extension",
     "_template": "https://github.com/apiology/cookiecutter-chrome-extension",
