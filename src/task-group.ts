@@ -1,7 +1,7 @@
 import { Wipable } from './wipable.js';
 
 export class TaskGroup extends Wipable {
-  taskGroup: Element;
+  private taskGroup: Element;
 
   constructor(taskGroup: Element) {
     super();

@@ -6,6 +6,7 @@
  */
 import { SubtaskSection } from './subtask-section.js';
 import { TaskGroup } from './task-group.js';
+import { BoardColumn } from './board-column.js';
 
 ((css) => {
   const head = document.getElementsByTagName('head')[0];
@@ -56,16 +57,23 @@ const buildSubtaskSections = (elements: Element[]): SubtaskSection[] => {
 
 export const processOnce = () => {
   console.debug('WIP limiter - processOnce');
-  const taskGroups = Array.from(document.getElementsByClassName('TaskGroup--withHeader'));
-  console.debug({ taskGroups });
-  taskGroups.forEach((taskGroupElement) => {
+  const boardColumnElements = Array.from(document.getElementsByClassName('BoardColumn'));
+  console.debug({ boardColumnElements });
+  boardColumnElements.forEach((boardColumnElement) => {
+    const boardColumn = new BoardColumn(boardColumnElement);
+    boardColumn.markBackgroundColor();
+  });
+
+  const taskGroupElements = Array.from(document.getElementsByClassName('TaskGroup--withHeader'));
+  console.debug({ taskGroupElements });
+  taskGroupElements.forEach((taskGroupElement) => {
     const taskGroup = new TaskGroup(taskGroupElement);
     taskGroup.markBackgroundColor();
   });
 
-  const subtaskItemRows = Array.from(document.getElementsByClassName('ItemRow'));
-  console.debug({ subtaskItemRows });
-  const subtaskSections = buildSubtaskSections(subtaskItemRows);
+  const subtaskItemRowElements = Array.from(document.getElementsByClassName('ItemRow'));
+  console.debug({ subtaskItemRowElements });
+  const subtaskSections = buildSubtaskSections(subtaskItemRowElements);
   console.debug({ subtaskSections });
   subtaskSections.forEach((subtaskSection) => {
     subtaskSection.markBackgroundColor();
