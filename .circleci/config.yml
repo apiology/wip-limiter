@@ -19,10 +19,10 @@ commands:
             export PATH="${HOME}/.pyenv/bin:${PATH}"
             export PATH="${HOME}/.rbenv/bin:${HOME}/.rbenv/shims:${PATH}"
             export PATH="${HOME}/project/node_modules/.bin:${PATH}"
+            export PATH="$(pwd)/bin:${PATH}"
             eval "$(pyenv init --path)"
             eval "$(pyenv virtualenv-init -)"
             eval "$(rbenv init -)"
-            export BUNDLE_PATH=vendor/bundle
             . "$HOME/.nvm/nvm.sh"
 
             <<parameters.command>>
@@ -34,17 +34,49 @@ commands:
     description: "Install source environment"
     steps:
       - checkout
+      - run:
+          name: Update timestamps to original commit time
+          command: |
+            git ls-tree -r --name-only HEAD | while read filename; do \
+              unixtime=$(git log -1 --format="%at" -- "${filename}")
+              touchtime=$(date -d @$unixtime +'%Y%m%d%H%M.%S')
+              touch -ht ${touchtime} "${filename}"
+            done
       - restore_cache:
-          key: gems-v2-{{ checksum "Gemfile.lock" }}
+          name: Restore rbenv cache
+          keys:
+            - rbenv-v5-{{ checksum "Gemfile" }}-{{ checksum "Gemfile.lock" }}- {{ checksum "Makefile"  }}- {{ checksum ".circleci/config.yml" }}- # yamllint disable-line rule:line-length
+            - rbenv-v5-{{ checksum "Gemfile" }}-{{ checksum "Gemfile.lock" }}- {{ checksum "Makefile"  }}- # yamllint disable-line rule:line-length
+            - rbenv-v5-{{ checksum "Gemfile" }}-{{ checksum "Gemfile.lock" }}-
+            - rbenv-v5-{{ checksum "Gemfile" }}-
+            - rbenv-v5-
+            - rbenv-
       - restore_cache:
-          key: wheels-v1-3.12.1-{{ checksum "requirements_dev.txt" }}
+          name: Restore pyenv cache
+          keys:
+            - pyenv-v2-{{ checksum "requirements_dev.txt" }}-
+            - pyenv-v2-
+            - pyenv-
       - restore_cache:
-          key: node_modules-v1-{{ checksum "yarn.lock" }}
+          name: Restore node_modules cache
+          keys:
+            - node_modules-v1-{{ checksum "yarn.lock" }}
+            - node_modules-v1-
+            - node_modules-
       - run:
           name: Initialize packages
           command: |
-            export BUNDLE_PATH=vendor/bundle
+            # measuring slows down the script - only enable when you
+            # want to debug where this is spending time
+
+            # export FIX_SH_TIMING_LOG=/tmp/fix_sh_timing.log
+
+            PATH="$(pwd)/bin:${PATH}"
+            export PATH
+
             './fix.sh'
+      - store_artifacts:
+          path: /tmp/fix_sh_timing.log
       - run:
           name: Verify Gemfile.lock
           command: |
@@ -66,22 +98,29 @@ commands:
           paths:
             - "/home/circleci/project/node_modules"
       - save_cache:
-          key: gems-v2-{{ checksum "Gemfile.lock" }}
+          name: 'Save pyenv cache'
+          key: pyenv-v2-{{ checksum "requirements_dev.txt" }}-{{ checksum ".python-version" }}
           paths:
-            - "vendor/bundle"
-      - save_cache:
-          key: wheels-v1-3.12.1-{{ checksum "requirements_dev.txt" }}
-          paths:
+            - "requirements_dev.txt.installed"
             - "/home/circleci/.cache/pip/wheels"
-            - "/home/circleci/.pyenv/versions/3.12.1/envs/wip-limiter-3.12.1"
-            - "/home/circleci/.pyenv/versions/wip-limiter-3.12.1"
+            - "/home/circleci/.pyenv"
+      - save_cache:
+          name: 'Save rbenv cache'
+          key: rbenv-v5-{{ checksum "Gemfile" }}-{{ checksum "Gemfile.lock" }}-{{ checksum "Makefile" }}-{{ checksum ".circleci/config.yml" }}-{{ checksum ".ruby-version" }} # yamllint disable-line rule:line-length
+          paths:
+            - "Gemfile.lock.installed"
+            - 'vendor/.keep'
+            - "vendor/bundle"
+            - "/home/circleci/.rbenv"
+            - ".bundle"
+            - ".ruby-version"
       - run:
           name: Download new circleci tool
           command: |
             curl -fLSs \
             https://raw.githubusercontent.com/CircleCI-Public/circleci-cli/master/install.sh | sudo bash
-  overcommit:
-    description: "Run overcommit"
+  quality:
+    description: "Quality checks"
     steps:
       - set_up_environment
       - run_with_languages:
@@ -90,39 +129,50 @@ commands:
             # Coax overcommit into working
             git config --global user.email "test@test.test"
             git config --global user.name "Test Test"
-            bundle exec overcommit --sign
-            bundle exec overcommit --sign pre-commit
+            bin/overcommit --sign
+            bin/overcommit --sign pre-commit
+            bin/overcommit --sign pre-push
 
-            bundle exec overcommit --run
 
+            bin/overcommit --run
 jobs:
-  overcommit:
+  quality:
     working_directory: ~/wip-limiter
     docker:
-      - image: apiology/circleci:latest
+      - image: cimg/base:current
     steps:
-      - when:
-          condition:
-            equal: [<< pipeline.git.branch >>, "main"]
-          steps:
-            - overcommit
-      - unless:
-          condition:
-            equal: [<< pipeline.git.branch >>, "main"]
-          steps:
-            - run: echo "overcommit only runs on main branch"
+      - quality
   build:
     working_directory: ~/wip-limiter
     docker:
-      - image: apiology/circleci:latest
+      - image: cimg/base:current
     steps:
       - set_up_environment
       - run_with_languages:
-          label: typecheck
+          label: Typecheck
           command: make citypecheck citypecoverage
+      - run:
+          label: Verify deltas
+          command: |
+            if [ -n "$(git status --porcelain)" ]
+            then
+              git status --porcelain
+              git diff -u .
+              >&2 echo "Please check in all files"
+              exit 1
+            fi
       - run_with_languages:
-          label: test
-          command: make citest cicoverage
+          label: Test
+          command: |
+            # Set timezone as same on dev box for test consistency
+
+            # https://stackoverflow.com/questions/44331836/apt-get-install-tzdata-noninteractive
+            sudo ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata
+            export TZ=America/New_York
+            date
+
+            make citest cicoverage
     # This seemed to shave 5ish% of the build time off when added
     resource_class: xlarge
 
@@ -137,11 +187,13 @@ workflows:
               only:
                 - main
     jobs:
-      - build
-      - overcommit
-  overcommit:
+      - build:
+          context:
+            - codecov
+      - quality
+  quality:
     jobs:
-      - overcommit
+      - quality
   build:
     jobs:
       - build
