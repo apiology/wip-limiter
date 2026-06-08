@@ -2,6 +2,11 @@
 
 source 'https://rubygems.org'
 
-gem 'mdl'
-gem 'overcommit', ['>=0.61.0', '<0.62.0']
-gem 'punchlist'
+group :development, :test do
+  gem 'mdl'
+end
+
+group :development do
+  gem 'overcommit', '~>0.68.0'
+  gem 'punchlist', ['>=1.3.1']
+end
