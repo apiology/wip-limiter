@@ -1,4 +1,3 @@
-// import { chrome } from 'jest-chrome';
 import { setPlatform } from './platform.js';
 import { TestPlatform } from './__mocks__/test-platform.js';
 // import { doWork } from './wip-limiter.js';
