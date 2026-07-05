@@ -3,8 +3,8 @@
  */
 
 import {
-  ensureArrayType, htmlElementByClass, htmlElementById, waitForElement, parent, ensureNotNull,
-  ensureHtmlElement, htmlElementBySelector, htmlElementsBySelector,
+  ensureArrayType, htmlElementByClass, htmlElementById, waitForElement, waitForElements, parent,
+  ensureNotNull, ensureHtmlElement, htmlElementBySelector, htmlElementsBySelector,
 } from './dom-utils.js';
 
 afterEach(() => {
@@ -13,6 +13,10 @@ afterEach(() => {
 
 test('ensureNotNull - null', async () => {
   expect(() => ensureNotNull(null)).toThrowError('value is null');
+});
+
+test('ensureNotNull - undefined', async () => {
+  expect(() => ensureNotNull(undefined)).toThrowError('value is null');
 });
 
 test('ensureArrayType - not array', async () => {
@@ -113,7 +117,7 @@ test('htmlElementBySelector', async () => {
   expect(htmlElementBySelector('#bar', HTMLDivElement)).toBe(bar);
 });
 
-test('htmlElementBySelector', async () => {
+test('htmlElementsBySelector', async () => {
   document.body.innerHTML = `
 <p>
   <div>1</div>
@@ -123,6 +127,16 @@ test('htmlElementBySelector', async () => {
 `;
 
   expect(htmlElementsBySelector('div', HTMLDivElement).map((e) => e.textContent)).toStrictEqual(['1', '2', '3']);
+});
+
+test('htmlElementsBySelector - wrong element', async () => {
+  document.body.innerHTML = `
+<div>
+  <span class="item">1</span>
+</div>
+`;
+
+  expect(() => htmlElementsBySelector('.item', HTMLDivElement)).toThrowError('element with selector .item not an HTMLDivElement as expected!');
 });
 
 test('htmlElementBySelector - wrong element', async () => {
@@ -287,6 +301,37 @@ test('waitForElementAppearsLater', async () => {
 </div>
 `;
   expect((await elementPromise).textContent).toEqual('2');
+});
+
+test('waitForElementsAlreadyExists', async () => {
+  document.body.innerHTML = `
+<div>
+  <div class="item">1</div>
+  <div class="item">2</div>
+</div>
+`;
+  const elements = await waitForElements('.item', HTMLDivElement);
+  expect(elements.map((e) => e.textContent)).toEqual(['1', '2']);
+});
+
+test('waitForElementsDefaultType', async () => {
+  document.body.innerHTML = '<div id="foo">1</div>';
+  const elements = await waitForElements('#foo');
+  expect(elements).toHaveLength(1);
+  expect(elements[0]?.textContent).toEqual('1');
+});
+
+test('waitForElementsAppearsLater', async () => {
+  document.body.innerHTML = '';
+  const elementsPromise = waitForElements('.item', HTMLDivElement);
+  document.body.innerHTML = `
+<div>
+  <div class="item">a</div>
+  <div class="item">b</div>
+</div>
+`;
+  const elements = await elementsPromise;
+  expect(elements.map((e) => e.textContent)).toEqual(['a', 'b']);
 });
 
 test('parent', async () => {
