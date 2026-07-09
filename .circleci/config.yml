@@ -15,6 +15,7 @@ commands:
     steps:
       - run:
           name: <<parameters.label>>
+          no_output_timeout: 30m
           command: |
             export PATH="${HOME}/.pyenv/bin:${PATH}"
             export PATH="${HOME}/.rbenv/bin:${HOME}/.rbenv/shims:${PATH}"
@@ -65,6 +66,7 @@ commands:
             - node_modules-
       - run:
           name: Initialize packages
+          no_output_timeout: 30m
           command: |
             # measuring slows down the script - only enable when you
             # want to debug where this is spending time
@@ -134,6 +136,7 @@ commands:
             bin/overcommit --sign pre-push
 
 
+            # bundle exec overcommit --diff # if full run takes too long in this repo
             bin/overcommit --run
 jobs:
   quality:
@@ -174,7 +177,8 @@ jobs:
 
             make citest cicoverage
     # This seemed to shave 5ish% of the build time off when added
-    resource_class: xlarge
+    # local: larger than template default for Jest/DOM; upstream: .gen2 sizing family
+    resource_class: xlarge.gen2
 
 workflows:
   version: 2
