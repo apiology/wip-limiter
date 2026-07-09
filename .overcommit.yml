@@ -16,6 +16,8 @@
 #
 # Uncomment the following lines to make the configuration take effect.
 
+gemfile: Gemfile
+
 PreCommit:
   # Extend default config at
   # https://github.com/sds/overcommit/blob/master/config/default.yml
@@ -24,6 +26,7 @@ PreCommit:
     exclude:
       # used for development
       - 'config/env.1p'
+      - 'config/env.local'
   EsLint:
     required_executable: 'npx'
     command: ['yarn', 'run', 'eslint', '--no-warn-ignored']
@@ -70,6 +73,7 @@ PreCommit:
     exclude:
       # used for development
       - 'config/env.1p'
+      - 'config/env.local'
       # sorbet sure likes to crash
       - 'core.*'
       # don't freak out over line below
@@ -104,12 +108,6 @@ PostMerge:
 PostRewrite:
   BundleInstall:
     enabled: true
-
-PrePush:
-  CustomScript:
-    enabled: true
-    requires_files: false
-    required_executable: 'bin/git-push-validate'
 
 #PostCheckout:
 #  ALL: # Special hook name that customizes all hooks of this type
