@@ -1,6 +1,6 @@
 {
     "_checkout": null,
-    "_output_dir": "/Users/broz/src/wip-limiter/.git/cookiecutter",
+    "_output_dir": "/Users/broz/.cursor/worktrees/wip-limiter/update-from-upstream-76a7/.git/cookiecutter",
     "_repo_dir": "/Users/broz/.cookiecutters/cookiecutter-chrome-extension",
     "_template": "https://github.com/apiology/cookiecutter-chrome-extension",
     "asana_api": "no",

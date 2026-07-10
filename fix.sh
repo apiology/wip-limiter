@@ -69,7 +69,7 @@ ensure_yarn() {
 }
 
 ensure_npm_modules() {
-  make yarn.lock
+  make yarn.lock.installed
 }
 
 apt_upgraded=0
@@ -80,6 +80,23 @@ update_apt() {
     sudo DEBIAN_FRONTEND=noninteractive apt-get update -y
     apt_upgraded=1
   fi
+}
+
+ensure_homebrew_path() {
+  if [ "$(uname)" != "Darwin" ]
+  then
+    return 0
+  fi
+
+  local prefix
+  for prefix in /opt/homebrew /usr/local
+  do
+    if [ -x "${prefix}/bin/brew" ]
+    then
+      export PATH="${prefix}/bin:${prefix}/sbin:${PATH}"
+      return 0
+    fi
+  done
 }
 
 install_rbenv() {
@@ -105,6 +122,7 @@ EOF
 }
 
 set_rbenv_env_variables() {
+  ensure_homebrew_path
   export PATH="${HOME}/.rbenv/bin:$PATH"
   eval "$(rbenv init -)"
 }
@@ -127,6 +145,8 @@ ensure_ruby_build() {
 }
 
 ensure_rbenv() {
+  ensure_homebrew_path
+
   if ! type rbenv >/dev/null 2>&1 && ! [ -f "${HOME}/.rbenv/bin/rbenv" ]
   then
     install_rbenv
@@ -149,7 +169,9 @@ latest_ruby_version() {
   #
   # https://github.com/rbenv/rbenv/issues/1441
   set +e
-  rbenv install --list 2>/dev/null | cat | grep "^${major_minor}."
+  # ruby-build 202605+ dropped EOL Rubies from `--list`; use `--list-all`.
+  # Match only patch releases, not prereleases (preview/rc/dev).
+  rbenv install --list-all 2>/dev/null | grep "^${major_minor}\\." | grep -v -- -preview | grep -v -- -rc | grep -v -- -dev | tail -1
   set -e
 }
 
@@ -246,12 +268,16 @@ ensure_bundle() {
       bundler_version=$(bundle --version | cut -d ' ' -f 3)
   fi
   echo "Bundler version: ${bundler_version}"
+  active_bundler_version=$(bundle --version 2>/dev/null | cut -d ' ' -f 3)
+  if [ -n "${bundler_version}" ] && [ "${bundler_version}" != "${active_bundler_version}" ]
+  then
+    gem install "bundler:${bundler_version}"
+    hash -r
+  fi
   bundler_version_major=$(cut -d. -f1 <<< "${bundler_version}")
   bundler_version_minor=$(cut -d. -f2 <<< "${bundler_version}")
   bundler_version_patch=$(cut -d. -f3 <<< "${bundler_version}")
-  # Version <2.2.22 of bundler isn't compatible with Ruby 3.3:
-  #
-  # https://stackoverflow.com/questions/70800753/rails-calling-didyoumeanspell-checkers-mergeerror-name-spell-checker-h
+  # Install bundler >=2.6.9 when older versions fail `bundle lock` on git-branch deps (aff6a48).
   need_better_bundler=false
   if [ "${bundler_version_major}" -lt 2 ]
   then
@@ -301,6 +327,7 @@ set_ruby_local_version() {
   then
     echo "${latest_ruby_version}" > .ruby-version
   fi
+  set_rbenv_env_variables
 }
 
 latest_python_version() {
@@ -338,23 +365,23 @@ set_pyenv_env_variables() {
   #
   # https://app.circleci.com/pipelines/github/apiology/cookiecutter-pypackage/15/workflows/10506069-7662-46bd-b915-2992db3f795b/jobs/15
   set +u
+  ensure_homebrew_path
   export PYENV_ROOT="${HOME}/.pyenv"
-  export PATH="${PYENV_ROOT}/bin:$PATH"
+  export PATH="${PYENV_ROOT}/bin:${PYENV_ROOT}/shims:${PATH}"
   eval "$(pyenv init --path)"
   eval "$(pyenv virtualenv-init -)"
   set -u
 }
 
 ensure_pyenv() {
+  ensure_homebrew_path
+
   if ! type pyenv >/dev/null 2>&1 && ! [ -f "${HOME}/.pyenv/bin/pyenv" ]
   then
     install_pyenv
   fi
 
-  if ! type pyenv >/dev/null 2>&1
-  then
-    set_pyenv_env_variables
-  fi
+  set_pyenv_env_variables
 }
 
 update_package() {
@@ -465,23 +492,79 @@ ensure_shellcheck() {
   fi
 }
 
+ensure_hooks_path() {
+  if git rev-parse --is-inside-work-tree >/dev/null 2>&1
+  then
+    git config core.hooksPath .githooks
+  fi
+}
+
+install_bootstrap_post_checkout_hook() {
+  if [ ! -d .githooks ]
+  then
+    mkdir -p .githooks
+  fi
+
+  cat > .githooks/post-checkout << 'EOF'
+#!/bin/bash
+
+set -euo pipefail
+
+exec ./bin/git-post-checkout-fix "$@"
+EOF
+  chmod +x .githooks/post-checkout
+}
+
+patch_overcommit_hooks() {
+  # Inject bootstrap so Cursor worktrees inherit .local-overcommit.yml before
+  # Overcommit loads config (gitignored file is absent on fresh worktree checkout).
+  # Do NOT patch overcommit-hook: it must match the gem template or Overcommit
+  # self-update will reinstall all hooks and strip these patches.
+  local hook hooks_dir bootstrap_line
+  hooks_dir="$(git config --get core.hooksPath 2>/dev/null || echo .git/hooks)"
+  bootstrap_line="repo_root = String(\`git rev-parse --show-toplevel 2>/dev/null\`).strip; load File.join(repo_root, '.git-hooks', 'bootstrap_local_overcommit.rb') rescue nil if repo_root != '' # OVERCOMMIT_REPO_BOOTSTRAP"
+
+  for hook in "${hooks_dir}"/*
+  do
+    [ -f "$hook" ] || continue
+    [[ "$(basename "$hook")" == "overcommit-hook" ]] && continue
+    grep -q 'OVERCOMMIT_REPO_BOOTSTRAP' "$hook" && continue
+    grep -q 'Entrypoint for Overcommit hook integration' "$hook" || continue
+    ruby - "$hook" "$bootstrap_line" <<'RUBY'
+hook_path = ARGV[0]
+bootstrap_line = ARGV[1]
+contents = File.read(hook_path)
+marker = "if ENV['OVERCOMMIT_DISABLE'].to_i != 0 || ENV['OVERCOMMIT_DISABLED'].to_i != 0\n  exit\nend\n"
+unless contents.include?('OVERCOMMIT_REPO_BOOTSTRAP')
+  raise "bootstrap insertion point not found in #{hook_path}" unless contents.include?(marker)
+  File.write(hook_path, contents.sub(marker, "#{marker}\n#{bootstrap_line}\n"))
+end
+RUBY
+  done
+}
 
 ensure_overcommit() {
   # don't run if we're in the middle of a cookiecutter child project
   # test, or otherwise don't have a Git repo to install hooks into...
-  if [ -d .git ]
+  if git rev-parse --is-inside-work-tree >/dev/null 2>&1
   then
     bundle exec overcommit --install
     bundle exec overcommit --sign
     bundle exec overcommit --sign pre-commit
+    patch_overcommit_hooks
+    install_bootstrap_post_checkout_hook
   else
     >&2 echo 'Not in a git repo; not installing git hooks'
   fi
 }
 
+ensure_rbenv
+
 ensure_types_built() {
   make build-typecheck
 }
+
+ensure_hooks_path
 
 ensure_nvm
 
