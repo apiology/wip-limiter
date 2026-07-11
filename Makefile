@@ -1,4 +1,4 @@
-.PHONY: build build-typecheck bundle_install cicoverage citypecheck citest citypecoverage clean clean-coverage clean-typecheck clean-typecoverage coverage default gem_dependencies help overcommit quality repl report-coverage report-coverage-to-codecov test typecheck typecoverage update_from_cookiecutter docs
+.PHONY: build build-typecheck bundle_install cicoverage citypecheck citest citypecoverage clean clean-coverage clean-typecheck clean-typecoverage coverage default gem_dependencies help overcommit quality repl report-coverage report-coverage-to-codecov test typecheck typecoverage post_cookiecutter_sync update_from_cookiecutter docs
 .DEFAULT_GOAL := default
 
 define PRINT_HELP_PYSCRIPT
@@ -152,20 +152,9 @@ update_apt: .make/apt_updated
 cicoverage: citest report-coverage-to-codecov ## check code coverage
 
 update_from_cookiecutter: ## Bring in changes from template project used to create this repo
-	bin/overcommit --uninstall
-	cookiecutter_project_upgrader --help >/dev/null
-	IN_COOKIECUTTER_PROJECT_UPGRADER=1 cookiecutter_project_upgrader || true
-	git checkout cookiecutter-template && git push --no-verify
-	git checkout main; overcommit --sign && overcommit --sign pre-commit && overcommit --sign pre-push && git checkout main && git pull && git checkout -b update-from-cookiecutter-$$(date +%Y-%m-%d-%H%M)
-	git merge cookiecutter-template || true
-	git checkout --ours Gemfile.lock yarn.lock || true
-	# update frequently security-flagged gems while we're here
-	bundle update --conservative json rexml || true
-	( make build && git add Gemfile.lock yarn.lock ) || true
-	bin/overcommit --install || true
-	@echo
-	@echo "Please resolve any merge conflicts below and push up a PR with:"
-	@echo
-	@echo '   gh pr create --title "Update from cookiecutter" --body "Automated PR to update from cookiecutter boilerplate"'
-	@echo
-	@echo
+	bin/cookiecutter_project_upgrader.sh
+	@$(MAKE) post_cookiecutter_sync
+
+post_cookiecutter_sync: ## Ecosystem-specific steps after template sync (empty by default)
+	@:
+
